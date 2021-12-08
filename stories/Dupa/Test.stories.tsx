@@ -1,9 +1,9 @@
 import React from 'react';
-import { Dupa } from "./Dupa";
+import { Test } from "./Test";
 
 export default {
-  title: 'Dupa',
-  component: Dupa
+  title: 'Test',
+  component: Test
 }
 
-export const DupaPrimary = () => <Dupa />
+export const Testprime = () => <Test />

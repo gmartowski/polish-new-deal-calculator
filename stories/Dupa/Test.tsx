@@ -1,3 +1,3 @@
-export const Dupa = () => {
-  return (<div>dupa</div>);
+export const Test = () => {
+  return (<div>test</div>);
 }
