@@ -3,6 +3,8 @@ import React from 'react';
 import { App } from './App';
 
 export default {
-  title: 'App',
+  title: 'Pages/App',
   component: App,
 };
+
+export const AppPage = () => <App/>
