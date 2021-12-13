@@ -19,9 +19,10 @@ const FlatTax = (props) => {
     revenueNetto,
     costsNetto,
     healthInsurance,
-    averageIncome,
-    taxationBase,
   } = useSelector((state: RootState) => state.taxpayer);
+
+  const averageIncome = revenueNetto - costsNetto;
+  const taxationBase = averageIncome - healthInsurance;
 
   const calculateNewDealPIT = () => {
     return Math.round((revenueNetto - costsNetto - healthInsurance) * 0.19);
@@ -83,8 +84,8 @@ const FlatTax = (props) => {
             </TableRow>
             <TableRow>
               <TableCell>Efektywna stopa obciążeń</TableCell>
-              <TableCell>{(calculatePIT() + healthInsurance + calculateHealthInsurance() + calculateSolidarityCost()) / averageIncome} PLN</TableCell>
-              <TableCell>{(calculateNewDealPIT() + healthInsurance + calculateNewDealHealthInsurance() + calculateSolidarityCost()) / averageIncome} PLN</TableCell>
+              <TableCell>{Math.round((calculatePIT() + healthInsurance + calculateHealthInsurance() + calculateSolidarityCost()) / averageIncome)} PLN</TableCell>
+              <TableCell>{Math.round((calculateNewDealPIT() + healthInsurance + calculateNewDealHealthInsurance() + calculateSolidarityCost()) / averageIncome)} PLN</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Ile zostaje netto ?</TableCell>

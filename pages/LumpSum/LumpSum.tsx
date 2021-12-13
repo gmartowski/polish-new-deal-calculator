@@ -1,7 +1,19 @@
 import React from "react";
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {
+  Grid, IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+} from "@material-ui/core";
+
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const LumpSum = () => {
 
@@ -14,7 +26,12 @@ const LumpSum = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>JDG - Ryczałt od przychodów ewidencjonowanych (dostępny do 2 mln euro przychodów)</TableCell>
+              <TableCell>Ryczałt
+                <Tooltip title="od przychodów ewidencjonowanych (dostępny do 2 mln euro przychodów)">
+                <IconButton>
+                   <InfoOutlinedIcon />
+                </IconButton>
+              </Tooltip></TableCell>
               <TableCell>DZIŚ</TableCell>
               <TableCell>Po Polskim Ładzie</TableCell>
             </TableRow>

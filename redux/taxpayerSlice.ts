@@ -3,17 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 export interface TaxPayerState {
   revenueNetto: number;
   costsNetto: number;
-  averageIncome: number;
   healthInsurance: number;
-  taxationBase: number;
 }
 
 const initialState: TaxPayerState = {
   revenueNetto: 145000,
   costsNetto: 33000,
-  averageIncome: 112000,
   healthInsurance: 11980,
-  taxationBase: 100200,
 };
 
 export const taxpayerSlice = createSlice({
