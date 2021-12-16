@@ -46,7 +46,7 @@ function TabPanel(props) {
 
 export const App = () => {
 
-  const {  handleSubmit,  formState: { errors } } = useForm();
+  const {  handleSubmit,  formState } = useForm();
 
   const [value, setValue] = React.useState(0);
   const finalData = useSelector((state: RootState) => state.finalIncomeReducer);
