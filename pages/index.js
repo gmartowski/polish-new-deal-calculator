@@ -4,6 +4,8 @@ import { App } from "./App/App";
 import Header from "../components/Header/Header";
 import lightMode from "../themes/LightMode";
 import { ThemeProvider } from "@material-ui/core";
+import { store } from "../redux/store";
+import { Provider } from "react-redux";
 
 export default function Home() {
 
@@ -17,13 +19,14 @@ export default function Home() {
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
                 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap"
                       rel="stylesheet"/>
-
             </Head>
 
             <main>
                 <ThemeProvider theme={lightMode}>
                     <Header/>
-                    <App/>
+                    <Provider store={store}>
+                        <App/>
+                    </Provider>
                 </ThemeProvider>
             </main>
         </>

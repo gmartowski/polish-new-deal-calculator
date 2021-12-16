@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import taxpayerReducer from '../redux/taxpayerSlice';
+import taxpayerReducer, { finalIncomeReducer, taxCalculationsReducer } from '../redux/taxpayerSlice';
 
 export const store = configureStore({
   reducer: {
     taxpayer: taxpayerReducer,
+    taxCalculationsReducer,
+    finalIncomeReducer,
   },
 });
 

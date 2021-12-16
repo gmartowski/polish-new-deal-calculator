@@ -1,100 +1,269 @@
 import React from "react";
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import {
+  Grid,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+} from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import SimplePieChart from "../../components/PieChart/SimplePieChart";
 
-const FlatTax = (props) => {
+const FlatTax = () => {
 
-  // const [summary, setSummary] = useState({
-  //   pit: 0,
-  //   pitNewDeal: 0,
-  //   zus: 0,
-  //   zusNewDeal: 0,
-  //   healthInsuranceOld: 0,
-  //   healthInsuranceNewDeal: 0,
-  //   solidarity: 0,
-  // });
+  const taxRate = 0.19;
+  const healthInsuranceRate = 0.049;
+  const minimalHealthInsuranceQuota = 3250.8;
+  const monthsInYear = 12;
+  const monthlyHealthInsurance = 381.81;
+  const monthlyHealthInsuranceDepreciation = 328.78;
+  const solidarityTributeThreshold = 1000000;
+  const solidarityTributeTaxRate = 0.04;
+  let formattedData = [];
+  let newDealFormattedData = [];
+  let nonewDealFormattedData = [];
+  const details = {
+    newDealPIT: 0,
+    currentPIT: 0,
+    annualHealthInsurance: 0,
+    newDealAnnualHealthInsurance: 0,
+    solidarityTribute: 0,
+    taxBurdenSum: 0,
+    newDealTaxBurdenSum: 0,
+    effectiveNewDealTaxBurden: 0,
+    nettoSalary: 0,
+    newDealNettoSalary: 0,
+  };
+
+  const [flatTaxDetails, setFlatTaxDetails] = React.useState(details);
 
   const {
-    revenueNetto,
-    costsNetto,
-    healthInsurance,
+    annualRevenueNetto,
+    annualTaxDeductibleExpenses,
+    annualSocialInsurance,
   } = useSelector((state: RootState) => state.taxpayer);
+  const dispatch = useDispatch();
 
-  const averageIncome = revenueNetto - costsNetto;
-  const taxationBase = averageIncome - healthInsurance;
+  const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
 
-  const calculateNewDealPIT = () => {
-    return Math.round((revenueNetto - costsNetto - healthInsurance) * 0.19);
+
+  const newDealPIT = (): number => {
+    return ((annualRevenueNetto - annualTaxDeductibleExpenses - annualSocialInsurance) * taxRate);
   };
 
-  const calculatePIT = () => {
-    return Math.round((revenueNetto - costsNetto - healthInsurance) * 0.19) - (12 * 328.78);
+  const currentPIT = (): number => {
+    return newDealPIT() - (monthsInYear * monthlyHealthInsuranceDepreciation);
   };
 
-  const calculateHealthInsurance = () => {
-    return 381.81 * 12;
+  const annualHealthInsurance = (): number => {
+    return monthlyHealthInsurance * monthsInYear;
   };
 
-  const calculateNewDealHealthInsurance = () => {
-    return Math.round((averageIncome - healthInsurance) * 0.049) > 3250.8 ? Math.round((averageIncome - healthInsurance) * 0.049) : 3250.8;
+  const newDealAnnualHealthInsurance = (): number => {
+    const newDealHealthInsuranceQuota = (annualAverageIncome - annualSocialInsurance) * healthInsuranceRate;
+    return newDealHealthInsuranceQuota > minimalHealthInsuranceQuota ? newDealHealthInsuranceQuota : minimalHealthInsuranceQuota;
   };
 
-  const calculateSolidarityCost = () => {
-    return taxationBase > 1000000 ? (taxationBase - 1000000) * 0.04 : 0;
+  const solidarityTribute = (): number => {
+    return taxationBase > solidarityTributeThreshold ? (taxationBase - solidarityTributeThreshold) * solidarityTributeTaxRate : 0;
   };
+
+  const taxBurdenSum = (): number => {
+    return currentPIT() + annualSocialInsurance + annualHealthInsurance() + solidarityTribute();
+  };
+
+  const newDealTaxBurdenSum = (): number => {
+    return newDealPIT() + annualSocialInsurance + newDealAnnualHealthInsurance() + solidarityTribute();
+  };
+
+  const effectiveTaxBurden = (): number => {
+    return (currentPIT() + annualSocialInsurance + annualHealthInsurance() + solidarityTribute()) / annualAverageIncome;
+  };
+
+  const effectiveNewDealTaxBurden = (): number => {
+    return (newDealPIT() + annualSocialInsurance + newDealAnnualHealthInsurance() + solidarityTribute()) / annualAverageIncome;
+  };
+
+  const nettoSalary = (): number => {
+    return annualAverageIncome - (currentPIT() + annualSocialInsurance + annualHealthInsurance() + solidarityTribute());
+  };
+
+  const newDealNettoSalary = (): number => {
+    return annualAverageIncome - (newDealPIT() + annualSocialInsurance + newDealAnnualHealthInsurance() + solidarityTribute());
+  };
+
+  const convertionHOC = (prop: () => number): number => {
+    return Math.round(Number(prop()));
+  };
+
+  const roundHOC = (prop: () => number): string => {
+    return `${Math.round(Number(prop()) * 100)} %`;
+  };
+
+  const presentData = () => {
+    collectData();
+
+    return Object.keys(formattedData).map((item: string, index: number) => (
+      <TableRow key={index}>
+        <TableCell>{formattedData[item].name}</TableCell>
+        <TableCell>{formattedData[item].current}</TableCell>
+        <TableCell>{formattedData[item].newDeal}</TableCell>
+      </TableRow>
+    ));
+  };
+
+  const collectData = () => {
+
+    formattedData = [
+      {
+        name: 'PIT',
+        newDeal: convertionHOC(newDealPIT),
+        current: convertionHOC(currentPIT),
+      },
+      {
+        name: 'ZUS',
+        newDeal: annualSocialInsurance,
+        current: annualSocialInsurance,
+      },
+      {
+        name: 'Składka zdrowotna',
+        newDeal: convertionHOC(newDealAnnualHealthInsurance),
+        current: convertionHOC(annualHealthInsurance),
+      },
+      {
+        name: 'Danina solidarnościowa',
+        newDeal: convertionHOC(solidarityTribute),
+        current: convertionHOC(solidarityTribute),
+      },
+      {
+        name: 'Suma obciążeń',
+        newDeal: convertionHOC(newDealTaxBurdenSum),
+        current: convertionHOC(taxBurdenSum),
+      },
+      {
+        name: 'Efektywna stopa obciążeń',
+        newDeal: roundHOC(effectiveNewDealTaxBurden),
+        current: roundHOC(effectiveTaxBurden),
+      },
+      {
+        name: 'Ile zostaje netto ?',
+        newDeal: convertionHOC(newDealNettoSalary),
+        current: convertionHOC(nettoSalary),
+      },
+    ];
+
+    nonewDealFormattedData = [
+      {
+        name: 'PIT',
+        value: convertionHOC(currentPIT),
+      },
+      {
+        name: 'ZUS',
+        value: annualSocialInsurance,
+      },
+      {
+        name: 'Składka zdrowotna',
+
+        value: convertionHOC(annualHealthInsurance),
+      },
+      {
+        name: 'Danina solidarnościowa',
+
+        value: convertionHOC(solidarityTribute),
+      },
+      {
+        name: 'Suma obciążeń',
+
+        value: convertionHOC(taxBurdenSum),
+      },
+      {
+        name: 'Efektywna stopa obciążeń',
+
+        value: roundHOC(effectiveTaxBurden),
+      },
+      {
+        name: 'Ile zostaje netto ?',
+
+        value: convertionHOC(nettoSalary),
+      },
+    ];
+
+    newDealFormattedData = [
+      {
+        name: 'PIT',
+        value: convertionHOC(newDealPIT),
+
+      },
+      {
+        name: 'ZUS',
+        value: annualSocialInsurance,
+
+      },
+      {
+        name: 'Składka zdrowotna',
+        value: convertionHOC(newDealAnnualHealthInsurance),
+
+      },
+      {
+        name: 'Danina solidarnościowa',
+        value: convertionHOC(solidarityTribute),
+
+      },
+      {
+        name: 'Suma obciążeń',
+        value: convertionHOC(newDealTaxBurdenSum),
+
+      },
+      {
+        name: 'Efektywna stopa obciążeń',
+        value: roundHOC(effectiveNewDealTaxBurden),
+
+      },
+      {
+        name: 'Ile zostaje netto ?',
+        value: convertionHOC(newDealNettoSalary),
+
+      },
+    ];
+  };
+
 
   return (
     <Grid container spacing={2}>
-
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>JDG - Podatek liniowy 19%</TableCell>
-              <TableCell>DZIŚ</TableCell>
-              <TableCell>Po Polskim Ładzie</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>PIT</TableCell>
-              <TableCell>{calculatePIT()} PLN</TableCell>
-              <TableCell>{calculateNewDealPIT()} PLN</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>ZUS</TableCell>
-              <TableCell>{Math.round(healthInsurance)} PLN</TableCell>
-              <TableCell>{Math.round(healthInsurance)} PLN</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Składka zdrowotna</TableCell>
-              <TableCell>{calculateHealthInsurance()} PLN</TableCell>
-              <TableCell>{calculateNewDealHealthInsurance()} PLN</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Danina solidarnościowa</TableCell>
-              <TableCell>{calculateSolidarityCost()} PLN</TableCell>
-              <TableCell>{calculateSolidarityCost()} PLN</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Suma obciążeń</TableCell>
-              <TableCell>{calculatePIT() + healthInsurance + calculateHealthInsurance() + calculateSolidarityCost()} PLN</TableCell>
-              <TableCell>{calculateNewDealPIT() + healthInsurance + calculateNewDealHealthInsurance() + calculateSolidarityCost()} PLN</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Efektywna stopa obciążeń</TableCell>
-              <TableCell>{Math.round((calculatePIT() + healthInsurance + calculateHealthInsurance() + calculateSolidarityCost()) / averageIncome)} PLN</TableCell>
-              <TableCell>{Math.round((calculateNewDealPIT() + healthInsurance + calculateNewDealHealthInsurance() + calculateSolidarityCost()) / averageIncome)} PLN</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Ile zostaje netto ?</TableCell>
-              <TableCell>{averageIncome - (calculatePIT() + healthInsurance + calculateHealthInsurance() + calculateSolidarityCost())} PLN</TableCell>
-              <TableCell>{averageIncome - (calculateNewDealPIT() + healthInsurance + calculateNewDealHealthInsurance() + calculateSolidarityCost())} PLN</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid item xs={6}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  Podatek liniowy
+                  <Tooltip title="19 %">
+                    <IconButton>
+                      <InfoOutlinedIcon/>
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+                <TableCell>2021</TableCell>
+                <TableCell>Polski Ład</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {presentData()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+      <Grid item xs={6}>
+        <SimplePieChart data={newDealFormattedData}/>
+        <SimplePieChart data={nonewDealFormattedData}/>
+      </Grid>
     </Grid>
   );
 };
