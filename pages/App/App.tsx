@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import TaxPayerDetails from "../TaxpayerDetails/TaxPayerDetails";
-import FlatTax from "../FlatTax/FlatTax";
+import FlatTaxContainer from "../FlatTax/FlatTaxContainer";
 import { useSelector } from 'react-redux';
 import { RootState } from "../../redux/store";
 import { Box, Grid, Tab, Tabs, Typography } from "@material-ui/core";
@@ -79,22 +79,22 @@ export const App = () => {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Podatek liniowy" {...a11yProps(0)} />
-                    <Tab label="Ryczałt" {...a11yProps(1)} />
-                    <Tab label="Skala podatkowa" {...a11yProps(1)} />
+                    {/*<Tab label="Ryczałt" {...a11yProps(1)} />*/}
+                    {/*<Tab label="Skala podatkowa" {...a11yProps(1)} />*/}
                   </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                  <FlatTax/>
+                  <FlatTaxContainer />
                 </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <LumpSum/>
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                  <ProgressiveTax/>
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                  <PrivateLimitedCompany/>
-                </TabPanel>
+                {/*<TabPanel value={value} index={1}>*/}
+                {/*  <LumpSum/>*/}
+                {/*</TabPanel>*/}
+                {/*<TabPanel value={value} index={2}>*/}
+                {/*  <ProgressiveTax/>*/}
+                {/*</TabPanel>*/}
+                {/*<TabPanel value={value} index={3}>*/}
+                {/*  <PrivateLimitedCompany/>*/}
+                {/*</TabPanel>*/}
               </Box>
             </Grid>
           </Grid>
