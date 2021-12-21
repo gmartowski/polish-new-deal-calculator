@@ -1,14 +1,10 @@
 import React from 'react';
-import { useForm } from "react-hook-form";
+import {useForm} from "react-hook-form";
 import TaxPayerDetails from "../TaxpayerDetails/TaxPayerDetails";
 import FlatTaxContainer from "../FlatTax/FlatTaxContainer";
-import { useSelector } from 'react-redux';
-import { RootState } from "../../redux/store";
-import { Box, Grid, Tab, Tabs, Typography } from "@material-ui/core";
-import LumpSum from "../LumpSum/LumpSum";
+import {Box, Grid, Tab, Tabs, Typography} from "@material-ui/core";
 import ProgressiveTax from "../ProgressiveTax/ProgressiveTax";
-import PrivateLimitedCompany from "../PrivateLimitedCompany/PrivateLimitedCompany";
-import { IFinalIncomesState } from "../../redux/taxpayerSlice";
+import LumpSumContainer from "../LumpSum/LumpSumContainer";
 
 function a11yProps(index) {
   return {
@@ -25,7 +21,7 @@ export interface IChartData {
 
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const {children, value, index, ...other} = props;
 
   return (
     <div
@@ -36,7 +32,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{p: 3}}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -46,18 +42,11 @@ function TabPanel(props) {
 
 export const App = () => {
 
-  const {  handleSubmit,  formState } = useForm();
-
+  const {handleSubmit} = useForm();
   const [value, setValue] = React.useState(0);
-  const finalData = useSelector((state: RootState) => state.finalIncomeReducer);
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const convertFinalData = (data: IFinalIncomesState) => {
-    return Object.keys(data).map((item) => data[item]);
   };
 
   const onSubmit = (data) => {
@@ -75,26 +64,23 @@ export const App = () => {
           </Grid>
           <Grid container>
             <Grid item xs={12}>
-              <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Box sx={{width: '100%'}}>
+                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Podatek liniowy" {...a11yProps(0)} />
-                    {/*<Tab label="Ryczałt" {...a11yProps(1)} />*/}
-                    {/*<Tab label="Skala podatkowa" {...a11yProps(1)} />*/}
+                    <Tab label="Ryczałt" {...a11yProps(1)} />
+                    <Tab label="Skala podatkowa" {...a11yProps(1)} />
                   </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                  <FlatTaxContainer />
+                  <FlatTaxContainer/>
                 </TabPanel>
-                {/*<TabPanel value={value} index={1}>*/}
-                {/*  <LumpSum/>*/}
-                {/*</TabPanel>*/}
-                {/*<TabPanel value={value} index={2}>*/}
-                {/*  <ProgressiveTax/>*/}
-                {/*</TabPanel>*/}
-                {/*<TabPanel value={value} index={3}>*/}
-                {/*  <PrivateLimitedCompany/>*/}
-                {/*</TabPanel>*/}
+                <TabPanel value={value} index={1}>
+                  <LumpSumContainer/>
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <ProgressiveTax/>
+                </TabPanel>
               </Box>
             </Grid>
           </Grid>

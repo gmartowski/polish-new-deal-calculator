@@ -1,6 +1,7 @@
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
 import FlatTax from "./FlatTax";
+import {Utils} from "../../components/Utils/Utils";
 
 const FlatTaxContainer = () => {
 
@@ -66,20 +67,12 @@ const FlatTaxContainer = () => {
     return annualAverageIncome - (newDealPIT() + annualSocialInsurance + newDealAnnualHealthInsurance() + solidarityTribute());
   };
 
-  const convertionHOC = (prop: () => number): number => {
-    return Math.round(Number(prop()));
-  };
-
-  const roundHOC = (prop: () => number): string => {
-    return `${Math.round(Number(prop()) * 100)} %`;
-  };
-
   const collectData = () => {
     const chart = [
       {
         name: 'PIT',
-        current: convertionHOC(currentPIT),
-        newDeal: convertionHOC(newDealPIT),
+        current: Utils.roundup(currentPIT),
+        newDeal: Utils.roundup(newDealPIT),
       },
       {
         name: 'ZUS',
@@ -88,24 +81,24 @@ const FlatTaxContainer = () => {
       },
       {
         name: 'Składka zdrowotna',
-        current: convertionHOC(annualHealthInsurance),
-        newDeal: convertionHOC(newDealAnnualHealthInsurance),
+        current: Utils.roundup(annualHealthInsurance),
+        newDeal: Utils.roundup(newDealAnnualHealthInsurance),
 
       },
       {
         name: 'Danina solidarnościowa',
-        current: convertionHOC(solidarityTribute),
-        newDeal: convertionHOC(solidarityTribute),
+        current: Utils.roundup(solidarityTribute),
+        newDeal: Utils.roundup(solidarityTribute),
       },
       {
         name: 'Suma obciążeń',
-        current: convertionHOC(taxBurdenSum),
-        newDeal: convertionHOC(newDealTaxBurdenSum),
+        current: Utils.roundup(taxBurdenSum),
+        newDeal: Utils.roundup(newDealTaxBurdenSum),
       },
       {
         name: 'Ile zostaje netto ?',
-        current: convertionHOC(nettoSalary),
-        newDeal: convertionHOC(newDealNettoSalary),
+        current: Utils.roundup(nettoSalary),
+        newDeal: Utils.roundup(newDealNettoSalary),
       }]
     return {
       chart,
@@ -113,8 +106,8 @@ const FlatTaxContainer = () => {
         ...chart,
         {
           name: 'Efektywna stopa obciążeń',
-          current: roundHOC(effectiveTaxBurden),
-          newDeal: roundHOC(effectiveNewDealTaxBurden),
+          current: Utils.percentage(effectiveTaxBurden),
+          newDeal: Utils.percentage(effectiveNewDealTaxBurden),
         },]
     };
   };
