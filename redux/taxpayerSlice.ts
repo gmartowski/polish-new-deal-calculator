@@ -4,6 +4,8 @@ export interface ITaxPayerState {
   annualRevenueNetto: number;
   annualTaxDeductibleExpenses: number;
   annualSocialInsurance: number;
+  lumpSumPercentage: number;
+  lumpSumCurrency: string;
 }
 
 export interface ITaxCalculationsDetailsInitialState {
@@ -21,6 +23,8 @@ const taxPayerInitialState: ITaxPayerState = {
   annualRevenueNetto: 145000,
   annualTaxDeductibleExpenses: 33000,
   annualSocialInsurance: 11980,
+  lumpSumPercentage: 0.12,
+  lumpSumCurrency:"PLN"
 };
 
 const taxCalculationsDetailsInitialState: ITaxCalculationsDetailsInitialState = {
@@ -69,11 +73,23 @@ export const taxCalculationsDetailsSlice = createSlice({
   name: 'taxCalculationsDetails',
   initialState: taxCalculationsDetailsInitialState,
   reducers: {
-    calculate: (state, action) => {
+    calculateAnnualAverageIncome: (state, action) => {
+      console.log('calculateAnnualAverageIncome',[
+        action.payload
+      ]);
+      console.log(action.payload.annualRevenueNetto - action.payload.annualTaxDeductibleExpenses);
       return {
-        annualAverageIncome: action.payload.annualRevenueNetto - action.payload.annualTaxDeductibleExpenses,
-        taxationBase: action.payload.annualAverageIncome - action.payload.annualSocialInsurance,
         ...state,
+        annualAverageIncome: action.payload.annualRevenueNetto - action.payload.annualTaxDeductibleExpenses,
+      };
+    },
+    calculateTaxationBase: (state, action) => {
+      console.log('calculateTaxationBase',[
+        action.payload
+      ]);
+      return {
+        ...state,
+        taxationBase: action.payload.annualAverageIncome - action.payload.annualSocialInsurance,
       };
     },
   },
@@ -111,7 +127,7 @@ export const finalIncomesSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { update } = taxpayerSlice.actions;
 export const { presentAllQuotas } = finalIncomesSlice.actions;
-export const { calculate } = taxCalculationsDetailsSlice.actions;
+export const { calculateAnnualAverageIncome, calculateTaxationBase } = taxCalculationsDetailsSlice.actions;
 
 export const { reducer: taxCalculationsReducer } = taxCalculationsDetailsSlice;
 export const { reducer: finalIncomeReducer } = finalIncomesSlice;

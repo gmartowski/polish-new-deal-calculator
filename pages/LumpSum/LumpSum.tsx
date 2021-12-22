@@ -1,60 +1,30 @@
 import React from "react";
-import {
-  Grid,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-} from "@material-ui/core";
-
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { Grid } from "@material-ui/core";
 import Chart from "../../components/Chart/Chart";
+import TableComponent from "../../components/Table/Table";
 
-const LumpSum = ({data: {chart, table}}) => {
+const LumpSum = ({ data: { summarized, common }, currency }) => (
 
-  const presentData = () => {
-    return Object.keys(table).map((item: string, index: number) => (
-      <TableRow key={index}>
-        <TableCell>{table[item].name}</TableCell>
-        <TableCell>{table[item].current}</TableCell>
-        <TableCell>{table[item].newDeal}</TableCell>
-      </TableRow>
-    ));
-  };
+  <Grid container spacing={2}>
 
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Ryczałt
-                  <Tooltip title="od przychodów ewidencjonowanych (dostępny do 2 mln euro przychodów)">
-                    <IconButton>
-                      <InfoOutlinedIcon/>
-                    </IconButton>
-                  </Tooltip></TableCell>
-                <TableCell>DZIŚ</TableCell>
-                <TableCell>Po Polskim Ładzie</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {presentData()}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Grid>
-      <Grid item xs={6}>
-        <Chart chartData={chart}/>
-      </Grid>
+    <Grid item xs={6}>
+
+      <TableComponent
+        common={common}
+        summarized={summarized}
+        taxationTypeDetails={{
+          name: "Ryczałt",
+          info: "od przychodów ewidencjonowanych (dostępny do 2 mln euro przychodów)",
+        }}
+        currency={currency}
+      />
     </Grid>
-  );
-};
+
+    <Grid item xs={6}>
+
+      <Chart chartData={common}/>
+    </Grid>
+  </Grid>
+);
 
 export default LumpSum;

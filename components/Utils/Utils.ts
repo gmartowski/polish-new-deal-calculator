@@ -8,4 +8,19 @@ export class Utils {
     return `${Math.round(Number(prop()) * 100)} %`;
   };
 
+  static getCurrencyDetails = (locale: 'PLN' | 'EUR') => {
+    switch (locale) {
+      case "PLN":
+        return { locale: "pl-PL", curr: "PLN" };
+      default:
+        return { locale: "de-DE", curr: "EUR" };
+
+    }
+  };
+
+  static convertToCurrency = (value: number, currency: 'PLN' | 'EUR') => {
+    const { locale, curr } = Utils.getCurrencyDetails(currency);
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: curr }).format(value);
+  };
+
 }

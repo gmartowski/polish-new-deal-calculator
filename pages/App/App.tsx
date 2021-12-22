@@ -1,10 +1,10 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
-import TaxPayerDetails from "../TaxpayerDetails/TaxPayerDetails";
 import FlatTaxContainer from "../FlatTax/FlatTaxContainer";
 import {Box, Grid, Tab, Tabs, Typography} from "@material-ui/core";
 import ProgressiveTax from "../ProgressiveTax/ProgressiveTax";
 import LumpSumContainer from "../LumpSum/LumpSumContainer";
+import TaxpayerDetails from "../TaxPayerDetails/TaxpayerDetails";
 
 function a11yProps(index) {
   return {
@@ -59,7 +59,7 @@ export const App = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container>
             <Grid item xs={12}>
-              <TaxPayerDetails/>
+              <TaxpayerDetails />
             </Grid>
           </Grid>
           <Grid container>
