@@ -1,7 +1,7 @@
 export class Utils {
 
-  static roundup = (prop: () => number): number => {
-    return Math.round(Number(prop()));
+  static roundup = (prop: number): number => {
+    return Math.round(Number(prop));
   };
 
   static percentage = (prop: () => number): string => {

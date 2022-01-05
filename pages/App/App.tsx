@@ -2,9 +2,9 @@ import React from 'react';
 import {useForm} from "react-hook-form";
 import FlatTaxContainer from "../FlatTax/FlatTaxContainer";
 import {Box, Grid, Tab, Tabs, Typography} from "@material-ui/core";
-import ProgressiveTax from "../ProgressiveTax/ProgressiveTax";
 import LumpSumContainer from "../LumpSum/LumpSumContainer";
 import TaxpayerDetails from "../TaxPayerDetails/TaxpayerDetails";
+import ProgressiveTaxContainer from "../ProgressiveTax/ProgressiveTaxContainer";
 
 function a11yProps(index) {
   return {
@@ -79,7 +79,7 @@ export const App = () => {
                   <LumpSumContainer/>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  <ProgressiveTax/>
+                  <ProgressiveTaxContainer />
                 </TabPanel>
               </Box>
             </Grid>

@@ -52,7 +52,10 @@ const TaxpayerDetails = () => {
                 annualRevenueNetto: Number(e.target.value),
                 annualTaxDeductibleExpenses,
               }));
-              dispatch(calculateTaxationBase({ annualSocialInsurance: annualSocialInsurance, annualAverageIncome }));
+              dispatch(calculateTaxationBase({
+                annualAverageIncome: Number(e.target.value) - annualTaxDeductibleExpenses,
+                annualSocialInsurance: annualSocialInsurance,
+              }));
             }}
           />
         </Grid>
@@ -66,10 +69,13 @@ const TaxpayerDetails = () => {
             onChange={(e) => {
               dispatch(update({ annualTaxDeductibleExpenses: Number(e.target.value) }));
               dispatch(calculateAnnualAverageIncome({
-                annualTaxDeductibleExpenses: Number(e.target.value),
                 annualRevenueNetto,
+                annualTaxDeductibleExpenses: Number(e.target.value),
               }));
-              dispatch(calculateTaxationBase({ annualSocialInsurance: annualSocialInsurance, annualAverageIncome }));
+              dispatch(calculateTaxationBase({
+                annualAverageIncome: annualRevenueNetto - Number(e.target.value),
+                annualSocialInsurance: annualSocialInsurance,
+              }));
             }}
           />
         </Grid>
@@ -80,13 +86,13 @@ const TaxpayerDetails = () => {
                      defaultValue={annualSocialInsurance}
                      onChange={(e) => {
                        dispatch(update({ annualSocialInsurance: Number(e.target.value) }));
-                       dispatch(calculateTaxationBase({
-                         annualSocialInsurance: Number(e.target.value),
-                         annualAverageIncome,
-                       }));
                        dispatch(calculateAnnualAverageIncome({
-                         annualTaxDeductibleExpenses: annualTaxDeductibleExpenses,
                          annualRevenueNetto,
+                         annualTaxDeductibleExpenses: annualTaxDeductibleExpenses,
+                       }));
+                       dispatch(calculateTaxationBase({
+                         annualAverageIncome: annualRevenueNetto - annualTaxDeductibleExpenses,
+                         annualSocialInsurance: Number(e.target.value),
                        }));
                      }}
           />

@@ -61,7 +61,6 @@ const LumpSumContainer = () => {
   };
 
   const nettoSalary = (): number => {
-    console.log(annualAverageIncome, taxationBase);
     return annualAverageIncome - (currentPIT() + annualHealthInsurance() + annualSocialInsurance);
   };
 
@@ -83,8 +82,8 @@ const LumpSumContainer = () => {
       common: [
         {
           name: 'PIT',
-          current: Utils.roundup(currentPIT),
-          newDeal: Utils.roundup(newDealPIT),
+          current: Utils.roundup(currentPIT()),
+          newDeal: Utils.roundup(newDealPIT()),
         },
         {
           name: 'ZUS',
@@ -93,19 +92,19 @@ const LumpSumContainer = () => {
         },
         {
           name: 'Składka zdrowotna',
-          current: Utils.roundup(annualHealthInsurance),
-          newDeal: Utils.roundup(annualNewDealHealthInsurance),
+          current: Utils.roundup(annualHealthInsurance()),
+          newDeal: Utils.roundup(annualNewDealHealthInsurance()),
 
         },
         {
           name: 'SUMA obciążeń***',
-          current: Utils.roundup(taxBurdenSum),
-          newDeal: Utils.roundup(newDealTaxBurdenSum),
+          current: Utils.roundup(taxBurdenSum()),
+          newDeal: Utils.roundup(newDealTaxBurdenSum()),
 
         }, {
           name: 'Ile zostaje netto?',
-          current: Utils.roundup(nettoSalary),
-          newDeal: Utils.roundup(newDealNettoSalary),
+          current: Utils.roundup(nettoSalary()),
+          newDeal: Utils.roundup(newDealNettoSalary()),
         },
       ],
       summarized: {

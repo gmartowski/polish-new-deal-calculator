@@ -22,14 +22,14 @@ export interface IFinalIncomesState {
 const taxPayerInitialState: ITaxPayerState = {
   annualRevenueNetto: 145000,
   annualTaxDeductibleExpenses: 33000,
-  annualSocialInsurance: 11980,
+  annualSocialInsurance: 14535.36, // w 2021 - 11980 (roczna, sam ZUS miesięcznie 998)
   lumpSumPercentage: 0.12,
   lumpSumCurrency:"PLN"
 };
 
 const taxCalculationsDetailsInitialState: ITaxCalculationsDetailsInitialState = {
   annualAverageIncome: 145000 - 33000,
-  taxationBase: 145000 - 33000 - 11980,
+  taxationBase: 145000 - 33000 - 1211.28,
 };
 interface IFinalIncomeItem {
   name: string;
@@ -74,19 +74,12 @@ export const taxCalculationsDetailsSlice = createSlice({
   initialState: taxCalculationsDetailsInitialState,
   reducers: {
     calculateAnnualAverageIncome: (state, action) => {
-      console.log('calculateAnnualAverageIncome',[
-        action.payload
-      ]);
-      console.log(action.payload.annualRevenueNetto - action.payload.annualTaxDeductibleExpenses);
       return {
         ...state,
         annualAverageIncome: action.payload.annualRevenueNetto - action.payload.annualTaxDeductibleExpenses,
       };
     },
     calculateTaxationBase: (state, action) => {
-      console.log('calculateTaxationBase',[
-        action.payload
-      ]);
       return {
         ...state,
         taxationBase: action.payload.annualAverageIncome - action.payload.annualSocialInsurance,
