@@ -41,7 +41,6 @@ function TabPanel(props) {
 }
 
 export const App = () => {
-
   const {handleSubmit} = useForm();
   const [value, setValue] = React.useState(0);
 
@@ -67,18 +66,18 @@ export const App = () => {
               <Box sx={{width: '100%'}}>
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Podatek liniowy" {...a11yProps(0)} />
-                    <Tab label="Ryczałt" {...a11yProps(1)} />
-                    <Tab label="Skala podatkowa" {...a11yProps(1)} />
+                    {/*<Tab label="Podatek liniowy" {...a11yProps(0)} />*/}
+                    {/*<Tab label="Ryczałt" {...a11yProps(1)} />*/}
+                    <Tab label="Skala podatkowa" {...a11yProps(0)} />
                   </Tabs>
                 </Box>
+                {/*<TabPanel value={value} index={0}>*/}
+                {/*  <FlatTaxContainer/>*/}
+                {/*</TabPanel>*/}
+                {/*<TabPanel value={value} index={1}>*/}
+                {/*  <LumpSumContainer/>*/}
+                {/*</TabPanel>*/}
                 <TabPanel value={value} index={0}>
-                  <FlatTaxContainer/>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <LumpSumContainer/>
-                </TabPanel>
-                <TabPanel value={value} index={2}>
                   <ProgressiveTaxContainer />
                 </TabPanel>
               </Box>

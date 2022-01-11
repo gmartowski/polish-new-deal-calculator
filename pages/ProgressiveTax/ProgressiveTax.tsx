@@ -5,7 +5,6 @@ import Chart from "../../components/Chart/Chart";
 import TableComponent from "../../components/Table/Table";
 
 const ProgressiveTax = ({ data: { common, summarized }, currency }) => {
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -24,7 +23,7 @@ const ProgressiveTax = ({ data: { common, summarized }, currency }) => {
 
       <Grid item xs={6}>
 
-        <Chart chartData={common}/>
+        {/*<Chart chartData={common}/>*/}
       </Grid>
     </Grid>
   );

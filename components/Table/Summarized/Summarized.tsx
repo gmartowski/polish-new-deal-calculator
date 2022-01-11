@@ -3,14 +3,16 @@ import React from "react";
 
 const Summarized = ({ summarized }) => (
   <Grid container>
-    <Grid item xs={5}>
-      <p>{summarized.name}</p>
-    </Grid>
-    <Grid item xs={3}>
-      <p>{summarized.current}</p>
-    </Grid>
-    <Grid item xs={3}>
-      <p>{summarized.newDeal}</p>
+    <Grid item xs={12}>
+      <div>{summarized.name}: <strong>{summarized.rate}</strong></div>
+      <div>
+        Ile stracisz / zyskasz na Polskim Ładzie ROCZNIE:
+        <p style={{ color: summarized.annual > 0 ? "green" : 'red' }}>{summarized.annual} PLN</p>
+      </div>
+      <div>
+        Ile stracisz / zyskasz na Polskim Ładzie Miesięcznie:
+        <p style={{ color: summarized.monthly > 0 ? "green" : 'red' }}>{summarized.monthly} PLN</p>
+      </div>
     </Grid>
   </Grid>
 );

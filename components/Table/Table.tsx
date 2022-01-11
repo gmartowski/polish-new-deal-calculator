@@ -11,11 +11,11 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { Utils } from "../Utils/Utils";
+import {Utils} from "../Utils/Utils";
 import Summarized from "./Summarized/Summarized";
 
-const TableComponent = ({ common, summarized, taxationTypeDetails, currency }) => {
-
+const TableComponent = ({common, summarized, taxationTypeDetails, currency}) => {
+  console.error(common, summarized);
   const presentData = () => {
     return Object.keys(common).map((item: string, index: number) => (
       <TableRow key={index}>
