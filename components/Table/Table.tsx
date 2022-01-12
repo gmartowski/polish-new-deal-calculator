@@ -12,10 +12,8 @@ import {
 } from "@material-ui/core";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import {Utils} from "../Utils/Utils";
-import Summarized from "./Summarized/Summarized";
 
-const TableComponent = ({common, summarized, taxationTypeDetails, currency}) => {
-  console.error(common, summarized);
+const TableComponent = ({common, taxationTypeDetails, currency}) => {
   const presentData = () => {
     return Object.keys(common).map((item: string, index: number) => (
       <TableRow key={index}>
@@ -45,7 +43,6 @@ const TableComponent = ({common, summarized, taxationTypeDetails, currency}) => 
           <TableBody>{presentData()}</TableBody>
         </Table>
       </TableContainer>
-      <Summarized summarized={summarized}/>
     </>
   );
 };

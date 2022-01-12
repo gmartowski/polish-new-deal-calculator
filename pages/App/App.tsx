@@ -1,7 +1,6 @@
 import React from 'react';
-import {useForm} from "react-hook-form";
 import FlatTaxContainer from "../FlatTax/FlatTaxContainer";
-import {Box, Grid, Tab, Tabs, Typography} from "@material-ui/core";
+import { Box, Grid, Tab, Tabs, Typography } from "@material-ui/core";
 import LumpSumContainer from "../LumpSum/LumpSumContainer";
 import TaxpayerDetails from "../TaxPayerDetails/TaxpayerDetails";
 import ProgressiveTaxContainer from "../ProgressiveTax/ProgressiveTaxContainer";
@@ -13,15 +12,9 @@ function a11yProps(index) {
   };
 }
 
-export interface IChartData {
-  name: 'Podatek Liniowy' | 'Ryczałt' | 'Skala podatkowa' | 'Spółka z o.o.';
-  current: number;
-  newDeal: number;
-}
-
 
 function TabPanel(props) {
-  const {children, value, index, ...other} = props;
+  const { children, value, index, ...other } = props;
 
   return (
     <div
@@ -32,39 +25,32 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{p: 3}}>
-          <Typography>{children}</Typography>
-        </Box>
+        <Box sx={{ p: 3 }}>{children}</Box>
       )}
     </div>
   );
 }
 
 export const App = () => {
-  const {handleSubmit} = useForm();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
   return (
     <Grid container>
       <Grid item xs={12}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <Grid container>
             <Grid item xs={12}>
-              <TaxpayerDetails />
+              <TaxpayerDetails/>
             </Grid>
           </Grid>
           <Grid container>
             <Grid item xs={12}>
-              <Box sx={{width: '100%'}}>
-                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+              <Box sx={{ width: '100%' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     {/*<Tab label="Podatek liniowy" {...a11yProps(0)} />*/}
                     {/*<Tab label="Ryczałt" {...a11yProps(1)} />*/}
@@ -78,7 +64,7 @@ export const App = () => {
                 {/*  <LumpSumContainer/>*/}
                 {/*</TabPanel>*/}
                 <TabPanel value={value} index={0}>
-                  <ProgressiveTaxContainer />
+                  <ProgressiveTaxContainer/>
                 </TabPanel>
               </Box>
             </Grid>

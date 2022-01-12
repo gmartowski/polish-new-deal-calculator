@@ -18,7 +18,7 @@ export class Utils {
     }
   };
 
-  static convertToCurrency = (value: number, currency: 'PLN' | 'EUR') => {
+  static convertToCurrency = (value: number, currency: 'PLN' | 'EUR' = 'PLN') => {
     const { locale, curr } = Utils.getCurrencyDetails(currency);
     return new Intl.NumberFormat(locale, { style: 'currency', currency: curr }).format(value);
   };

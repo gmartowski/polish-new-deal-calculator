@@ -1,4 +1,5 @@
 import { IProgressiveTaxResults } from "./IProgressiveTax";
+import { Utils } from "../../components/Utils/Utils";
 
 export class DataCollectingService {
   static collect({
@@ -66,12 +67,24 @@ export class DataCollectingService {
           newDeal: monthlyNetto,
         },
       ],
-      summarized: {
-        name: 'Efektywna stopa obciążeń',
-        rate,
-        annual: annualNettoBeforeND - annualNetto,
-        monthly: monthlyNettoBeforeND - monthlyNetto,
-      },
+      summarized: [
+        {
+          name: 'Efektywna stopa obciążeń',
+          value: rate,
+        },
+        {
+          name: 'Ile stracisz / zyskasz na Polskim Ładzie ROCZNIE',
+          value: Utils.convertToCurrency(annualNetto - annualNettoBeforeND),
+        },
+        {
+          name: 'Ile stracisz / zyskasz na Polskim Ładzie Miesięcznie:',
+          value: Utils.convertToCurrency(monthlyNetto - monthlyNettoBeforeND),
+        },
+        {
+          name: "Wpadasz w drugi próg podatkowy ?",
+          value: taxBase >= 120000 ? "TAK" : "NIE"
+        }
+      ],
     };
   }
 }

@@ -6,6 +6,8 @@ export interface ITaxPayerState {
   annualSocialInsurance: number;
   lumpSumPercentage: number;
   lumpSumCurrency: string;
+  couple: boolean;
+  partnerIncomes: number;
 }
 
 export interface ITaxCalculationsDetailsInitialState {
@@ -21,15 +23,17 @@ export interface IFinalIncomesState {
 
 const taxPayerInitialState: ITaxPayerState = {
   annualRevenueNetto: 145000,
-  annualTaxDeductibleExpenses: 33000,
+  annualTaxDeductibleExpenses: 0,
   annualSocialInsurance: 11980, // w 2021 - 11980 (roczna, sam ZUS miesięcznie 998), 2022  - 14535.36
   lumpSumPercentage: 0.12,
-  lumpSumCurrency:"PLN"
+  lumpSumCurrency:"PLN",
+  couple: false,
+  partnerIncomes: 0,
 };
 
 const taxCalculationsDetailsInitialState: ITaxCalculationsDetailsInitialState = {
-  annualAverageIncome: 145000 - 33000,
-  taxationBase: 145000 - 33000 - 11980,
+  annualAverageIncome: 145000 - 0,
+  taxationBase: 145000 - 0 - 11980,
 };
 interface IFinalIncomeItem {
   name: string;

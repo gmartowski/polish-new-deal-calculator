@@ -1,20 +1,37 @@
-import { Grid } from "@material-ui/core";
+import {createTheme, Grid, List, ListItem, ListItemIcon, ListItemText, ThemeProvider} from "@material-ui/core";
+import DoneIcon from '@mui/icons-material/Done';
 import React from "react";
 
-const Summarized = ({ summarized }) => (
-  <Grid container>
-    <Grid item xs={12}>
-      <div>{summarized.name}: <strong>{summarized.rate}</strong></div>
-      <div>
-        Ile stracisz / zyskasz na Polskim Ładzie ROCZNIE:
-        <p style={{ color: summarized.annual > 0 ? "green" : 'red' }}>{summarized.annual} PLN</p>
-      </div>
-      <div>
-        Ile stracisz / zyskasz na Polskim Ładzie Miesięcznie:
-        <p style={{ color: summarized.monthly > 0 ? "green" : 'red' }}>{summarized.monthly} PLN</p>
-      </div>
+const Summarized = ({summarized}) => (
+    <ThemeProvider
+        theme={createTheme({
+            palette: {
+                primary: { main: 'rgb(102, 157, 246)' },
+                secondary: { main: 'hsla(123, 46%, 34%, 1)', light: 'hsla(360, 91%, 50%, 1)' },
+            },
+        })}
+    >
+    <Grid container>
+        <Grid item xs={12}>
+            <List dense={false}>
+                {
+                    summarized.map((item, index) => (
+                        <ListItem key={index}>
+                            <ListItemIcon>
+                                <DoneIcon/>
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={item.name}
+                                secondary={item.value}
+                                primaryTypographyProps={{color: 'primary'}}
+                            />
+                        </ListItem>
+                    ))
+                }
+            </List>
+        </Grid>
     </Grid>
-  </Grid>
+    </ThemeProvider>
 );
 
 export default Summarized;

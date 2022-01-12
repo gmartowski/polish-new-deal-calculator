@@ -69,7 +69,7 @@ const progressiveData = {
     afterND: {
       pension: 693.58,//emerytalna
       rent: 284.26,//rentowa
-      sickleave: 87.05,//chorobowaŚ
+      sickleave: 87.05,//chorobowa
       accident: 59.34,//wypadkowa
       labourFound: 87.05//fpracy
     },
