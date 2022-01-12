@@ -1,4 +1,3 @@
-import { IProgressiveTaxResults } from "./IProgressiveTax";
 import { Utils } from "../../components/Utils/Utils";
 
 export class DataCollectingService {
@@ -18,18 +17,18 @@ export class DataCollectingService {
                    rate,
                    monthlyNetto,
                    monthlyNettoBeforeND
-                 }: IProgressiveTaxResults) {
+                 }) {
     return {
       common: [
         {
           name: 'Ulga dla klasy średniej',
           current: 0,
-          newDeal: relief,
+          newDeal: relief ? relief : 0,
         },
         {
           name: 'podstawa opodatkowania po uldze',
           current: taxBase,
-          newDeal: taxBase - relief,
+          newDeal: relief ? (taxBase - relief) : taxBase,
         },
         {
           name: 'PIT',
@@ -48,8 +47,8 @@ export class DataCollectingService {
         },
         {
           name: 'Danina solidarnościowa',
-          current: solidarity,
-          newDeal: solidarity,
+          current: solidarity ? solidarity : 0,
+          newDeal: solidarity ? solidarity : 0,
         },
         {
           name: 'SUMA obciążeń***',

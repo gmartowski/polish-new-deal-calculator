@@ -53,19 +53,19 @@ export const App = () => {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     {/*<Tab label="Podatek liniowy" {...a11yProps(0)} />*/}
-                    {/*<Tab label="Ryczałt" {...a11yProps(1)} />*/}
-                    <Tab label="Skala podatkowa" {...a11yProps(0)} />
+                    <Tab label="Ryczałt" {...a11yProps(0)} />
+                    <Tab label="Skala podatkowa" {...a11yProps(1)} />
                   </Tabs>
                 </Box>
+                <TabPanel value={value} index={0}>
+                  <LumpSumContainer/>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <ProgressiveTaxContainer/>
+                </TabPanel>
                 {/*<TabPanel value={value} index={0}>*/}
                 {/*  <FlatTaxContainer/>*/}
                 {/*</TabPanel>*/}
-                {/*<TabPanel value={value} index={1}>*/}
-                {/*  <LumpSumContainer/>*/}
-                {/*</TabPanel>*/}
-                <TabPanel value={value} index={0}>
-                  <ProgressiveTaxContainer/>
-                </TabPanel>
               </Box>
             </Grid>
           </Grid>
