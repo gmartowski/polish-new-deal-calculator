@@ -4,6 +4,7 @@ import { Box, Grid, Tab, Tabs, Typography } from "@material-ui/core";
 import LumpSumContainer from "../LumpSum/LumpSumContainer";
 import TaxpayerDetails from "../TaxPayerDetails/TaxpayerDetails";
 import ProgressiveTaxContainer from "../ProgressiveTax/ProgressiveTaxContainer";
+import Invoices from "../Invoices/Invoices";
 
 function a11yProps(index) {
   return {
@@ -55,6 +56,7 @@ export const App = () => {
                     {/*<Tab label="Podatek liniowy" {...a11yProps(0)} />*/}
                     <Tab label="Ryczałt" {...a11yProps(0)} />
                     <Tab label="Skala podatkowa" {...a11yProps(1)} />
+                    {/*<Tab label="Faktury" {...a11yProps(2)} />*/}
                   </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
@@ -65,6 +67,9 @@ export const App = () => {
                 </TabPanel>
                 {/*<TabPanel value={value} index={0}>*/}
                 {/*  <FlatTaxContainer/>*/}
+                {/*</TabPanel>*/}
+                {/*<TabPanel value={value} index={2}>*/}
+                {/*  <Invoices/>*/}
                 {/*</TabPanel>*/}
               </Box>
             </Grid>
