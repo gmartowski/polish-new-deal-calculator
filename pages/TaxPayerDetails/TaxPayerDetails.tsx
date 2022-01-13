@@ -128,7 +128,6 @@ const TaxPayerDetails = () => {
               label="Stawka ryczałtowa"
               onChange={(e) => dispatch(update({ lumpSumPercentage: Number(e.target.value) }))}
             >
-              <MenuItem value={0.02}>0.02</MenuItem>
               <MenuItem value={0.1}>0.1</MenuItem>
               <MenuItem value={0.12}>0.12</MenuItem>
               <MenuItem value={0.15}>0.15</MenuItem>
@@ -151,7 +150,8 @@ const TaxPayerDetails = () => {
           </FormControl>
         </Grid>
         <Grid item xs={3}>
-          <InputLabel id="lump-sum-currency-label">Rozliczam się wpólnie z małżonkiem</InputLabel>
+          <FormControl>
+          <InputLabel id="lump-sum-couple-label">Para</InputLabel>
           <Select
             labelId="lump-sum-couple-label"
             id="lump-sum-couple"
@@ -162,6 +162,7 @@ const TaxPayerDetails = () => {
             <MenuItem value={0}>Nie</MenuItem>
             <MenuItem value={1}>Tak</MenuItem>
           </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={3}>
           {couple && <TextField id="field-10"
