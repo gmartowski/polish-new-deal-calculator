@@ -1,53 +1,36 @@
 import React from 'react';
+import { Grid } from "@material-ui/core";
+import { AppData } from "./AppData";
+import TabPanel from "../../components/TabPanel/TabPanel";
+import TabPanelTabs from "../../components/TabPanel/TabPanelTabs/TabPanelTabs";
 import FlatTaxContainer from "../FlatTax/FlatTaxContainer";
-import { Box, Grid } from "@material-ui/core";
 import LumpSumContainer from "../LumpSum/LumpSumContainer";
 import TaxPayerDetails from "../TaxPayerDetails/TaxPayerDetails";
 import ProgressiveTaxContainer from "../ProgressiveTax/ProgressiveTaxContainer";
 import Invoices from "../Invoices/Invoices";
-import TabPanel from "../../components/TabPanel/TabPanel";
-import TabPanelTabs from "../../components/TabPanel/TabPanelTabs/TabPanelTabs";
 
 const App = () => {
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const handleChange = (value): void => setValue(value);
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <form>
-          <Grid container>
-            <Grid item xs={12}>
-              <TaxPayerDetails/>
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item xs={12}>
-              <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  <TabPanelTabs value={value} onChange={handleChange} aria-label="basic tabs example"/>
-                </Box>
-                <TabPanel value={value} index={0}>
-                  <LumpSumContainer/>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <ProgressiveTaxContainer/>
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                  <FlatTaxContainer/>
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                  <Invoices/>
-                </TabPanel>
-              </Box>
-            </Grid>
-          </Grid>
-        </form>
+    <>
+      <Grid container>
+        <Grid item xs={12}>
+          <TaxPayerDetails/>
+        </Grid>
       </Grid>
-    </Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <TabPanelTabs value={value} handleChange={handleChange} tabs={AppData} aria-label="basic tabs example"/>
+          <TabPanel value={value} index={0}><LumpSumContainer/></TabPanel>
+          <TabPanel value={value} index={1}><ProgressiveTaxContainer/></TabPanel>
+          <TabPanel value={value} index={2}><FlatTaxContainer/></TabPanel>
+          <TabPanel value={value} index={3}><Invoices/></TabPanel>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 export default App;
