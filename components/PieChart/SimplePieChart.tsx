@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
-import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import React, { PureComponent } from 'react';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const SimplePieChart = ({data}) => {
+const SimplePieChart = ({ data }) => {
 
   const preventNegativeValues = (data: any): any => {
     return data.map((item: any) => {

@@ -17,9 +17,17 @@ const LumpSumContainer = () => {
   } = useSelector((state: RootState) => state.taxpayer);
 
   const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
+  const {
+    monthlyHealthInsuranceDepreciation,
+    monthlyHealthInsurance,
+    newDealMonthlyHealtInsurances: { second, first, third },
+    monthsInYear,
+    revenueFirstThreshold,
+    revenueSecondThreshold
+  } = lumpSumData
 
   const personalIncomeTax = (): number => {
-    return ((annualRevenueNetto - annualSocialInsurance) * lumpSumPercentage - (lumpSumData.monthsInYear * lumpSumData.monthlyHealthInsuranceDepreciation)) || 0;
+    return ((annualRevenueNetto - annualSocialInsurance) * lumpSumPercentage - (monthsInYear * monthlyHealthInsuranceDepreciation)) || 0;
   };
 
   const newDealPersonalIncomeTax = (): number => {
@@ -27,19 +35,19 @@ const LumpSumContainer = () => {
   };
 
   const annualHealthInsurance = (): number => {
-    return lumpSumData.monthlyHealthInsurance * lumpSumData.monthsInYear;
+    return monthlyHealthInsurance * monthsInYear;
   };
 
   const annualNewDealHealthInsurance = (): number => {
-    if (annualRevenueNetto > lumpSumData.revenueSecondThreshold) {
-      return lumpSumData.newDealMonthlyHealtInsurances.first * lumpSumData.monthsInYear;
+    if (annualRevenueNetto > revenueSecondThreshold) {
+      return third * monthsInYear;
     }
 
-    if (annualRevenueNetto > lumpSumData.revenueFirstThreshold) {
-      return lumpSumData.newDealMonthlyHealtInsurances.second * lumpSumData.monthsInYear;
+    if (annualRevenueNetto > revenueFirstThreshold) {
+      return second * monthsInYear;
     }
 
-    return lumpSumData.newDealMonthlyHealtInsurances.first * lumpSumData.monthsInYear;
+    return first * monthsInYear;
   };
 
   const effectiveRate = (sum: number): string => taxationBase === 0 ? "n/d" : `${Utils.roundup(sum / annualAverageIncome * 100)} %`;
@@ -52,7 +60,7 @@ const LumpSumContainer = () => {
 
     const newDealPit = Utils.roundup(newDealPersonalIncomeTax());
     const newDealHealthInsurance = Utils.roundup(annualNewDealHealthInsurance());
-    const newDealSum = Utils.roundup(pit + annualSocialInsurance + newDealHealthInsurance);
+    const newDealSum = Utils.roundup(newDealPit + annualSocialInsurance + newDealHealthInsurance);
     const newDealAnnualNetto = Utils.roundup(annualAverageIncome - newDealSum);
 
     return {
@@ -66,8 +74,8 @@ const LumpSumContainer = () => {
       newDealSum,
       newDealAnnualNetto,
       rate: effectiveRate(newDealSum),
-      monthlyNetto: Utils.roundup(annualNetto / lumpSumData.monthsInYear),
-      newDealMonthlyNetto: Utils.roundup(newDealAnnualNetto / lumpSumData.monthsInYear),
+      monthlyNetto: Utils.roundup(annualNetto / monthsInYear),
+      newDealMonthlyNetto: Utils.roundup(newDealAnnualNetto / monthsInYear),
     };
   };
 
