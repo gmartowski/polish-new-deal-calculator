@@ -2,8 +2,9 @@ import React from "react";
 import { Grid, } from "@material-ui/core";
 import TableComponent from "../../components/Table/Table";
 import Summarized from "../../components/Table/Summarized/Summarized";
+import Chart from "../../components/Chart/Chart";
 
-const FlatTax = ({ data: { common, summarized }, currency }) => (
+const FlatTax = ({ data: { common, summarized, chart }, currency }) => (
   <Grid container spacing={2}>
     <Grid item xs={6}>
 
@@ -18,6 +19,9 @@ const FlatTax = ({ data: { common, summarized }, currency }) => (
 
     <Grid item xs={6}>
       <Summarized summarized={summarized}/>
+      <div style={{ height: '400px' }}>
+        <Chart data={chart}/>
+      </div>
     </Grid>
   </Grid>
 );

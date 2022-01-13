@@ -78,7 +78,7 @@ const FlatTaxContainer = () => {
     };
   };
 
-  return <FlatTax data={DataCollectingService.collectLumpSumData(calculateQuotas())} currency={lumpSumCurrency}/>;
+  return <FlatTax data={DataCollectingService.collectFlatTaxData(calculateQuotas())} currency={lumpSumCurrency}/>;
 }
 
 export default FlatTaxContainer

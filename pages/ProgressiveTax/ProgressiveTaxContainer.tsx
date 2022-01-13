@@ -125,7 +125,7 @@ const ProgressiveTaxContainer = () => {
     };
   };
 
-  return <ProgressiveTax data={DataCollectingService.collectLumpSumData(calculateQuotas())} currency={lumpSumCurrency}/>;
+  return <ProgressiveTax data={DataCollectingService.collectProgressiveTaxData(calculateQuotas())} currency={lumpSumCurrency}/>;
 };
 
 export default ProgressiveTaxContainer;
