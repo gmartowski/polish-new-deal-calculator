@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Utils } from "../../components/Utils/Utils";
-import { IProgressiveTaxResults } from "./IProgressiveTax";
+import { IProgressiveTaxData } from "./IProgressiveTax";
 import { numberOfMonths, progressiveData } from "./ProgressiveTaxData";
 import ProgressiveTax from "./ProgressiveTax";
 import { DataCollectingService } from "./DataCollectingService";
@@ -92,39 +92,40 @@ const ProgressiveTaxContainer = () => {
 
   const effectiveRate = (sum: number): string => taxationBase === 0 ? "n/d" : `${Utils.roundup(sum / annualAverageIncome * 100)} %`;
 
-  const calculateQuotas = (): IProgressiveTaxResults => {
+  const calculateQuotas = (): IProgressiveTaxData => {
     const taxBase = Utils.roundup(taxationBase + Number(couple ? partnerIncomes : 0))
+    const pit = newDealPersonalIncomeTax(taxBase);
     const relief = Utils.roundup(middleClassRelief());
     const solidarity = Utils.roundup(solidarityTax());
-    const pit = Utils.roundup(personalIncomeTax(taxBase, relief));
-    const pitBeforeND = newDealPersonalIncomeTax(taxBase);
-    const healthInsurance = Utils.roundup(annualHealthInsurance());
-    const healthInsuranceBeforeND = Utils.roundup(numberOfMonths * progressiveData.healthInsurance.beforeND.quota);
+    const healthInsurance = Utils.roundup(numberOfMonths * progressiveData.healthInsurance.beforeND.quota);
     const sum = pit + annualSocialInsurance + healthInsurance + solidarity;
-    const sumBeforeND = pitBeforeND + annualSocialInsurance + healthInsuranceBeforeND + solidarity;
     const annualNetto = Utils.roundup(annualAverageIncome - sum);
-    const annualNettoBeforeND = Utils.roundup(annualAverageIncome - sumBeforeND);
+
+    const newDealPit = Utils.roundup(personalIncomeTax(taxBase, relief));
+    const newDealHealthInsurance = Utils.roundup(annualHealthInsurance());
+    const newDealSum = newDealPit + annualSocialInsurance + newDealHealthInsurance + solidarity;
+    const newDealAnnualNetto = Utils.roundup(annualAverageIncome - newDealSum);
 
     return {
+      pit,
       relief,
       solidarity,
       taxBase,
-      pit,
-      pitBeforeND,
       healthInsurance,
-      healthInsuranceBeforeND,
       sum,
-      sumBeforeND,
       annualNetto,
-      annualNettoBeforeND,
       annualSocialInsurance,
-      rate: effectiveRate(sum),
-      monthlyNetto: Utils.roundup(annualNetto / numberOfMonths),
-      monthlyNettoBeforeND: Utils.roundup(annualNettoBeforeND / numberOfMonths)
+      newDealPit,
+      newDealHealthInsurance,
+      newDealAnnualNetto,
+      newDealSum,
+      rate: effectiveRate(newDealSum),
+      newDealMonthlyNetto: Utils.roundup(newDealAnnualNetto / numberOfMonths),
+      monthlyNetto: Utils.roundup(annualNetto / numberOfMonths)
     };
   };
 
-  return <ProgressiveTax data={DataCollectingService.collect(calculateQuotas())} currency={lumpSumCurrency}/>;
+  return <ProgressiveTax data={DataCollectingService.collectLumpSumData(calculateQuotas())} currency={lumpSumCurrency}/>;
 };
 
 export default ProgressiveTaxContainer;

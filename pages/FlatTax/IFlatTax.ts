@@ -1,18 +1,16 @@
-export interface IProgressiveTaxData {
+export interface IFlatTaxData {
   pit: number;
-  relief: number;
   solidarity: number;
-  taxBase: number;
   healthInsurance: number;
   sum: number;
   annualNetto: number;
   annualSocialInsurance: number;
+  rate: string;
   newDealPit: number;
   newDealHealthInsurance: number;
   newDealAnnualNetto: number;
   newDealSum: number;
-  rate: string;
+  newDealRate: string;
   newDealMonthlyNetto: number;
   monthlyNetto: number;
 }
-

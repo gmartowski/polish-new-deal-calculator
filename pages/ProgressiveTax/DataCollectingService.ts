@@ -1,39 +1,35 @@
 import { Utils } from "../../components/Utils/Utils";
+import { ILumpSumData } from "../LumpSum/ILumpSumData";
+import { IProgressiveTaxData } from "./IProgressiveTax";
 
 export class DataCollectingService {
-  static collect({
-                   relief,
-                   solidarity,
-                   taxBase,
-                   pit,
-                   pitBeforeND,
-                   healthInsurance,
-                   healthInsuranceBeforeND,
-                   sum,
-                   sumBeforeND,
-                   annualNetto,
-                   annualNettoBeforeND,
-                   annualSocialInsurance,
-                   rate,
-                   monthlyNetto,
-                   monthlyNettoBeforeND
-                 }) {
+  static collectLumpSumData(data: ILumpSumData) {
+    const {
+      sum,
+      newDealSum,
+      newDealPit,
+      newDealAnnualNetto,
+      monthlyNetto,
+      newDealMonthlyNetto,
+      annualSocialInsurance,
+      newDealHealthInsurance,
+      healthInsurance,
+      pit,
+      annualNetto,
+      rate
+    } = data;
+
     return {
       common: [
         {
-          name: 'Ulga dla klasy średniej',
-          current: 0,
-          newDeal: relief ? relief : 0,
+          name: 'Podatek',
+          current: pit,
+          newDeal: newDealPit,
         },
         {
-          name: 'podstawa opodatkowania po uldze',
-          current: taxBase,
-          newDeal: relief ? (taxBase - relief) : taxBase,
-        },
-        {
-          name: 'PIT',
-          current: pitBeforeND,
-          newDeal: pit,
+          name: 'Składka zdrowotna',
+          current: healthInsurance,
+          newDeal: newDealHealthInsurance,
         },
         {
           name: 'ZUS',
@@ -41,29 +37,19 @@ export class DataCollectingService {
           newDeal: annualSocialInsurance,
         },
         {
-          name: 'Składka zdrowotna',
-          current: healthInsuranceBeforeND,
-          newDeal: healthInsurance,
-        },
-        {
-          name: 'Danina solidarnościowa',
-          current: solidarity ? solidarity : 0,
-          newDeal: solidarity ? solidarity : 0,
-        },
-        {
           name: 'SUMA obciążeń***',
-          current: sumBeforeND,
-          newDeal: sum,
+          current: sum,
+          newDeal: newDealSum,
         },
         {
           name: 'Ile zostaje netto?',
-          current: annualNettoBeforeND,
-          newDeal: annualNetto,
+          current: annualNetto,
+          newDeal: newDealAnnualNetto,
         },
         {
           name: 'Ile to miesięcznie netto (na ręke)?',
-          current: monthlyNettoBeforeND,
-          newDeal: monthlyNetto,
+          current: monthlyNetto,
+          newDeal: newDealMonthlyNetto,
         },
       ],
       summarized: [
@@ -73,11 +59,94 @@ export class DataCollectingService {
         },
         {
           name: 'Ile stracisz / zyskasz na Polskim Ładzie ROCZNIE',
-          value: Utils.convertToCurrency(annualNetto - annualNettoBeforeND),
+          value: Utils.convertToCurrency(newDealAnnualNetto - annualNetto),
         },
         {
           name: 'Ile stracisz / zyskasz na Polskim Ładzie Miesięcznie:',
-          value: Utils.convertToCurrency(monthlyNetto - monthlyNettoBeforeND),
+          value: Utils.convertToCurrency(newDealMonthlyNetto - monthlyNetto),
+        },
+      ],
+    };
+  }
+
+  static collectProgressiveTaxData(data: IProgressiveTaxData) {
+    const {
+      pit,
+      newDealPit,
+      newDealMonthlyNetto,
+      monthlyNetto,
+      newDealAnnualNetto,
+      newDealSum,
+      newDealHealthInsurance,
+      sum,
+      annualSocialInsurance,
+      rate,
+      healthInsurance,
+      annualNetto,
+      taxBase,
+      solidarity,
+      relief
+    } = data;
+    return {
+      common: [
+        {
+          name: 'Ulga dla klasy średniej',
+          current: 0,
+          newDeal: relief || 0,
+        },
+        {
+          name: 'podstawa opodatkowania po uldze',
+          current: taxBase,
+          newDeal: relief ? (taxBase - relief) : taxBase,
+        },
+        {
+          name: 'PIT',
+          current: pit,
+          newDeal: newDealPit,
+        },
+        {
+          name: 'ZUS',
+          current: annualSocialInsurance,
+          newDeal: annualSocialInsurance,
+        },
+        {
+          name: 'Składka zdrowotna',
+          current: healthInsurance,
+          newDeal: newDealHealthInsurance,
+        },
+        {
+          name: 'Danina solidarnościowa',
+          current: solidarity || 0,
+          newDeal: solidarity || 0,
+        },
+        {
+          name: 'SUMA obciążeń***',
+          current: sum,
+          newDeal: newDealSum,
+        },
+        {
+          name: 'Ile zostaje netto?',
+          current: sum,
+          newDeal: newDealSum,
+        },
+        {
+          name: 'Ile to miesięcznie netto (na ręke)?',
+          current: monthlyNetto,
+          newDeal: newDealMonthlyNetto,
+        },
+      ],
+      summarized: [
+        {
+          name: 'Efektywna stopa obciążeń',
+          value: rate,
+        },
+        {
+          name: 'Ile stracisz / zyskasz na Polskim Ładzie ROCZNIE',
+          value: Utils.convertToCurrency(newDealAnnualNetto - annualNetto),
+        },
+        {
+          name: 'Ile stracisz / zyskasz na Polskim Ładzie Miesięcznie:',
+          value: Utils.convertToCurrency(newDealMonthlyNetto - monthlyNetto),
         },
         {
           name: "Wpadasz w drugi próg podatkowy ?",
@@ -85,5 +154,10 @@ export class DataCollectingService {
         }
       ],
     };
+
+  }
+
+  static collectFlatTax() {
+
   }
 }

@@ -1,37 +1,40 @@
-import {useSelector} from "react-redux";
-import {RootState} from "../../redux/store";
+import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import FlatTax from "./FlatTax";
-import {Utils} from "../../components/Utils/Utils";
+import { Utils } from "../../components/Utils/Utils";
+import { DataCollectingService } from "../ProgressiveTax/DataCollectingService";
+import { flatTaxData } from "./FlatTaxData";
+import { IFlatTaxData } from "./IFlatTax";
+
 
 const FlatTaxContainer = () => {
-
-  const taxRate = 0.19;
-  const healthInsuranceRate = 0.049;
-  const minimalHealthInsuranceQuota = 3250.8;
-  const monthsInYear = 12;
-  const monthlyHealthInsurance = 381.81;
-  const monthlyHealthInsuranceDepreciation = 328.78;
-  const solidarityTributeThreshold = 1000000;
-  const solidarityTributeTaxRate = 0.04;
 
   const {
     annualRevenueNetto,
     annualTaxDeductibleExpenses,
     annualSocialInsurance,
+    lumpSumCurrency
   } = useSelector((state: RootState) => state.taxpayer);
 
-  const {annualAverageIncome, taxationBase} = useSelector((state: RootState) => state.taxCalculationsReducer);
+  const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
+  const {
+    healthInsuranceRate,
+    monthlyHealthInsurance,
+    monthlyHealthInsuranceDepreciation,
+    minimalHealthInsuranceQuota,
+    taxRate,
+    solidarityTributeTaxRate,
+    solidarityTributeThreshold,
+    monthsInYear
+  } = flatTaxData;
 
-  const newDealPIT = (): number => {
+  const personalIncomeTax = (): number => {
+    return newDealPersonalIncomeTax() - (monthsInYear * monthlyHealthInsuranceDepreciation);
+  };
+
+  const newDealPersonalIncomeTax = (): number => {
     return ((annualRevenueNetto - annualTaxDeductibleExpenses - annualSocialInsurance) * taxRate);
-  };
-
-  const currentPIT = (): number => {
-    return newDealPIT() - (monthsInYear * monthlyHealthInsuranceDepreciation);
-  };
-
-  const annualHealthInsurance = (): number => {
-    return monthlyHealthInsurance * monthsInYear;
   };
 
   const newDealAnnualHealthInsurance = (): number => {
@@ -39,82 +42,43 @@ const FlatTaxContainer = () => {
     return newDealHealthInsuranceQuota > minimalHealthInsuranceQuota ? newDealHealthInsuranceQuota : minimalHealthInsuranceQuota;
   };
 
-  const solidarityTribute = (): number => {
-    return taxationBase > solidarityTributeThreshold ? (taxationBase - solidarityTributeThreshold) * solidarityTributeTaxRate : 0;
+  const annualHealthInsurance = (): number => {
+    return monthlyHealthInsurance * monthsInYear;
   };
 
-  const taxBurdenSum = (): number => {
-    return currentPIT() + annualSocialInsurance + annualHealthInsurance() + solidarityTribute();
-  };
+  const effectiveRate = (sum: number): string => taxationBase === 0 ? "n/d" : `${Utils.roundup(sum / annualAverageIncome * 100)} %`;
 
-  const newDealTaxBurdenSum = (): number => {
-    return newDealPIT() + annualSocialInsurance + newDealAnnualHealthInsurance() + solidarityTribute();
-  };
+  const calculateQuotas = (): IFlatTaxData => {
+    const pit = Utils.roundup(personalIncomeTax());
+    const solidarity = taxationBase > solidarityTributeThreshold ? (taxationBase - solidarityTributeThreshold) * solidarityTributeTaxRate : 0;
+    const healthInsurance = Utils.roundup(annualHealthInsurance());
+    const sum = Utils.roundup(pit + annualSocialInsurance + healthInsurance + solidarity);
+    const annualNetto = Utils.roundup(annualAverageIncome - sum);
 
-  const effectiveTaxBurden = (): number => {
-    return (currentPIT() + annualSocialInsurance + annualHealthInsurance() + solidarityTribute()) / annualAverageIncome;
-  };
+    const newDealPit = Utils.roundup(newDealPersonalIncomeTax());
+    const newDealHealthInsurance = Utils.roundup(newDealAnnualHealthInsurance());
+    const newDealSum = Utils.roundup(newDealPit + annualSocialInsurance + newDealHealthInsurance + solidarity);
+    const newDealAnnualNetto = Utils.roundup(annualAverageIncome - newDealSum);
 
-  const effectiveNewDealTaxBurden = (): number => {
-    return (newDealPIT() + annualSocialInsurance + newDealAnnualHealthInsurance() + solidarityTribute()) / annualAverageIncome;
-  };
-
-  const nettoSalary = (): number => {
-    return annualAverageIncome - (currentPIT() + annualSocialInsurance + annualHealthInsurance() + solidarityTribute());
-  };
-
-  const newDealNettoSalary = (): number => {
-    return annualAverageIncome - (newDealPIT() + annualSocialInsurance + newDealAnnualHealthInsurance() + solidarityTribute());
-  };
-
-  const collectData = () => {
-    const chart = [
-      {
-        name: 'PIT',
-        current: Utils.roundup(currentPIT),
-        newDeal: Utils.roundup(newDealPIT),
-      },
-      {
-        name: 'ZUS',
-        current: annualSocialInsurance,
-        newDeal: annualSocialInsurance,
-      },
-      {
-        name: 'Składka zdrowotna',
-        current: Utils.roundup(annualHealthInsurance),
-        newDeal: Utils.roundup(newDealAnnualHealthInsurance),
-
-      },
-      {
-        name: 'Danina solidarnościowa',
-        current: Utils.roundup(solidarityTribute),
-        newDeal: Utils.roundup(solidarityTribute),
-      },
-      {
-        name: 'Suma obciążeń',
-        current: Utils.roundup(taxBurdenSum),
-        newDeal: Utils.roundup(newDealTaxBurdenSum),
-      },
-      {
-        name: 'Ile zostaje netto ?',
-        current: Utils.roundup(nettoSalary),
-        newDeal: Utils.roundup(newDealNettoSalary),
-      }]
     return {
-      chart,
-      table: [
-        ...chart,
-        {
-          name: 'Efektywna stopa obciążeń',
-          current: Utils.percentage(effectiveTaxBurden),
-          newDeal: Utils.percentage(effectiveNewDealTaxBurden),
-        },]
+      pit,
+      healthInsurance,
+      sum,
+      annualNetto,
+      annualSocialInsurance,
+      newDealPit,
+      solidarity,
+      newDealHealthInsurance,
+      newDealSum,
+      newDealAnnualNetto,
+      rate: effectiveRate(sum),
+      newDealRate: effectiveRate(newDealSum),
+      monthlyNetto: Utils.roundup(annualNetto / monthsInYear),
+      newDealMonthlyNetto: Utils.roundup(newDealAnnualNetto / monthsInYear),
     };
   };
 
-  return (
-    <FlatTax data={collectData()}/>
-  )
+  return <FlatTax data={DataCollectingService.collectLumpSumData(calculateQuotas())} currency={lumpSumCurrency}/>;
 }
 
 export default FlatTaxContainer

@@ -1,13 +1,14 @@
-import LumpSum from "./LumpSum";
+import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import React from "react";
+import LumpSum from "./LumpSum";
 import { Utils } from "../../components/Utils/Utils";
 import { DataCollectingService } from "../ProgressiveTax/DataCollectingService";
 import { lumpSumData } from "./LumpSumData";
+import { ILumpSumData } from "./ILumpSumData";
 
 const LumpSumContainer = () => {
-  
+
   const {
     annualRevenueNetto,
     annualSocialInsurance,
@@ -17,14 +18,12 @@ const LumpSumContainer = () => {
 
   const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
 
-  const newDealPersonalIncomeTax = () => {
-    const value = (annualRevenueNetto - annualSocialInsurance) * lumpSumPercentage;
-    return value > 0 ? value : 0;
+  const personalIncomeTax = (): number => {
+    return ((annualRevenueNetto - annualSocialInsurance) * lumpSumPercentage - (lumpSumData.monthsInYear * lumpSumData.monthlyHealthInsuranceDepreciation)) || 0;
   };
 
-  const personalIncomeTax = (): number => {
-    const value = ((annualRevenueNetto - annualSocialInsurance) * lumpSumPercentage - (lumpSumData.monthsInYear * lumpSumData.monthlyHealthInsuranceDepreciation));
-    return value > 0 ? value : 0;
+  const newDealPersonalIncomeTax = (): number => {
+    return (annualRevenueNetto - annualSocialInsurance) * lumpSumPercentage || 0
   };
 
   const annualHealthInsurance = (): number => {
@@ -45,35 +44,35 @@ const LumpSumContainer = () => {
 
   const effectiveRate = (sum: number): string => taxationBase === 0 ? "n/d" : `${Utils.roundup(sum / annualAverageIncome * 100)} %`;
 
-  const calculateQuotas = () => {
-
-    const pit = Utils.roundup(newDealPersonalIncomeTax());
-    const pitBeforeND = Utils.roundup(personalIncomeTax());
-    const healthInsurance = Utils.roundup(annualNewDealHealthInsurance());
-    const healthInsuranceBeforeND = Utils.roundup(annualHealthInsurance());
+  const calculateQuotas = (): ILumpSumData => {
+    const pit = Utils.roundup(personalIncomeTax());
+    const healthInsurance = Utils.roundup(annualHealthInsurance());
     const sum = Utils.roundup(pit + annualSocialInsurance + healthInsurance);
-    const sumBeforeND = Utils.roundup(pitBeforeND + annualSocialInsurance + healthInsuranceBeforeND);
     const annualNetto = Utils.roundup(annualAverageIncome - sum);
-    const annualNettoBeforeND = Utils.roundup(annualAverageIncome - sumBeforeND);
+
+    const newDealPit = Utils.roundup(newDealPersonalIncomeTax());
+    const newDealHealthInsurance = Utils.roundup(annualNewDealHealthInsurance());
+    const newDealSum = Utils.roundup(pit + annualSocialInsurance + newDealHealthInsurance);
+    const newDealAnnualNetto = Utils.roundup(annualAverageIncome - newDealSum);
 
     return {
       pit,
-      pitBeforeND,
       healthInsurance,
-      healthInsuranceBeforeND,
       sum,
-      sumBeforeND,
       annualNetto,
-      annualNettoBeforeND,
       annualSocialInsurance,
-      rate: effectiveRate(sum),
+      newDealPit,
+      newDealHealthInsurance,
+      newDealSum,
+      newDealAnnualNetto,
+      rate: effectiveRate(newDealSum),
       monthlyNetto: Utils.roundup(annualNetto / lumpSumData.monthsInYear),
-      monthlyNettoBeforeND: Utils.roundup(annualNettoBeforeND / lumpSumData.monthsInYear),
+      newDealMonthlyNetto: Utils.roundup(newDealAnnualNetto / lumpSumData.monthsInYear),
     };
   };
 
 
-  return <LumpSum data={DataCollectingService.collect(calculateQuotas())} currency={lumpSumCurrency}/>;
+  return <LumpSum data={DataCollectingService.collectLumpSumData(calculateQuotas())} currency={lumpSumCurrency}/>;
 };
 
 export default LumpSumContainer;
