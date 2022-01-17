@@ -8,6 +8,15 @@ const LumpSum = (({ data: { common, summarized, chart }, currency }) => (
   <Grid container spacing={2}>
 
     <Grid item xs={6}>
+      <p>
+        <h3>Zmiany po wprowadzeniu Polskiego Ładu</h3>
+        <ul>
+        <li>brak możliwości odliczenia składki zdrowotnej od podatku</li>
+        <li>zmiana sposobu naliczania składki zdrowotnej (3 progi (60%, 100%, 180%) - przychód do 60, do 300 i pow. 300 tys PLN, 9%). Jako przychód - kwota netto na FV. UWAGA ! Nie odejmujemy w tym przypadku skłądek ZUS !!!</li>
+        <li>IT - zmiana opodatkowania z 15% na 12%</li>
+      </ul>
+      </p>
+      <p>Sposób obliczenia podatku - liczymy podatek od PRZYCHODU (nasza pensja netto (bez VAT-u), minus składka ZUS, pomnożone razy stawka ryczałtu (dla IT 12%))</p>
       <TableComponent
         common={common}
         taxationTypeDetails={{

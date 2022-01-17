@@ -18,16 +18,14 @@ const LumpSumContainer = () => {
 
   const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
   const {
-    monthlyHealthInsuranceDepreciation,
-    monthlyHealthInsurance,
-    newDealMonthlyHealtInsurances: { second, first, third },
+    threshold,
+    percentageForIT,
+    healthInsurance,
     monthsInYear,
-    revenueFirstThreshold,
-    revenueSecondThreshold
   } = lumpSumData
 
   const personalIncomeTax = (): number => {
-    return ((annualRevenueNetto - annualSocialInsurance) * lumpSumPercentage - (monthsInYear * monthlyHealthInsuranceDepreciation)) || 0;
+    return ((annualRevenueNetto - annualSocialInsurance) * percentageForIT.previous - (monthsInYear * healthInsurance.previous.monthlyDeprecation)) || 0;
   };
 
   const newDealPersonalIncomeTax = (): number => {
@@ -35,19 +33,19 @@ const LumpSumContainer = () => {
   };
 
   const annualHealthInsurance = (): number => {
-    return monthlyHealthInsurance * monthsInYear;
+    return healthInsurance.previous.monthly * monthsInYear;
   };
 
   const annualNewDealHealthInsurance = (): number => {
-    if (annualRevenueNetto > revenueSecondThreshold) {
-      return third * monthsInYear;
+    if (annualRevenueNetto > threshold.second) {
+      return healthInsurance.newDeal.third * monthsInYear;
     }
 
-    if (annualRevenueNetto > revenueFirstThreshold) {
-      return second * monthsInYear;
+    if (annualRevenueNetto > threshold.first) {
+      return healthInsurance.newDeal.second * monthsInYear;
     }
 
-    return first * monthsInYear;
+    return healthInsurance.newDeal.first * monthsInYear;
   };
 
   const effectiveRate = (sum: number): string => taxationBase === 0 ? "n/d" : `${Utils.roundup(sum / annualAverageIncome * 100)} %`;

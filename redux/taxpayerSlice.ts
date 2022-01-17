@@ -6,8 +6,6 @@ export interface ITaxPayerState {
   annualSocialInsurance: number;
   lumpSumPercentage: number;
   lumpSumCurrency: string;
-  couple: boolean;
-  partnerIncomes: number;
 }
 
 export interface ITaxCalculationsDetailsInitialState {
@@ -22,39 +20,38 @@ export interface IFinalIncomesState {
 }
 
 const taxPayerInitialState: ITaxPayerState = {
-  annualRevenueNetto: 145000,
+  annualRevenueNetto: 100000,
   annualTaxDeductibleExpenses: 0,
-  annualSocialInsurance: 11980, // w 2021 - 11980 (roczna, sam ZUS miesięcznie 998), 2022  - 14535.36
+  annualSocialInsurance: 13490.76, // w 2021 - 11980 (roczna, sam ZUS miesięcznie 998), 2022  - 13490,76 (roczna, sam ZUS miesięcznie 1124,23)
   lumpSumPercentage: 0.12,
-  lumpSumCurrency:"PLN",
-  couple: false,
-  partnerIncomes: 0,
+  lumpSumCurrency: "PLN",
 };
 
 const taxCalculationsDetailsInitialState: ITaxCalculationsDetailsInitialState = {
-  annualAverageIncome: 145000 - 0,
-  taxationBase: 145000 - 0 - 11980,
+  annualAverageIncome: 100000,
+  taxationBase: 100000 - 13490.76,
 };
+
 interface IFinalIncomeItem {
   name: string;
-  current: number;
+  previous: number;
   newDeal: number;
 }
 
 const finalIncomes: IFinalIncomesState = {
   lumpSum: {
     name: 'Ryczałt',
-    current: 0,
+    previous: 0,
     newDeal: 0,
   },
   progressiveTax: {
     name: 'Skala podatkowa',
-    current: 0,
+    previous: 0,
     newDeal: 0,
   },
   flatTax: {
     name: 'Podatek Liniowy',
-    current: 0,
+    previous: 0,
     newDeal: 0,
   },
 };
@@ -100,19 +97,19 @@ export const finalIncomesSlice = createSlice({
       return {
         lumpSum: {
           name: 'Ryczałt',
-          current: actions.payload.current,
+          previous: actions.payload.previous,
           newDeal: actions.payload.newDeal,
           ...state.lumpSum,
         },
         progressiveTax: {
           name: 'Skala podatkowa',
-          current: actions.payload.current,
+          previous: actions.payload.previous,
           newDeal: actions.payload.newDeal,
           ...state.progressiveTax,
         },
         flatTax: {
           name: 'Podatek Liniowy',
-          current: actions.payload.flatTax.current,
+          previous: actions.payload.flatTax.previous,
           newDeal: actions.payload.flatTax.newDeal,
           ...state.flatTax,
         },

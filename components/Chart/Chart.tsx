@@ -20,7 +20,7 @@ const Chart = ({ data }) => {
         <Tooltip/>
         <Legend/>
         <Bar dataKey="newDeal" fill="#8884d8"/>
-        <Bar dataKey="current" fill="#82ca9d"/>
+        <Bar dataKey="previous" fill="#82ca9d"/>
       </BarChart>
     </ResponsiveContainer>
   )

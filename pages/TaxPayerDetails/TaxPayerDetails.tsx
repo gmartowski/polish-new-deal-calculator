@@ -21,8 +21,6 @@ const TaxPayerDetails = () => {
     annualSocialInsurance,
     lumpSumPercentage,
     lumpSumCurrency,
-    couple,
-    partnerIncomes
   } = useSelector((state: RootState) => state.taxpayer);
 
   useEffect(() => {
@@ -148,29 +146,6 @@ const TaxPayerDetails = () => {
               <MenuItem value={"EUR"}>EUR</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={3}>
-          <FormControl>
-          <InputLabel id="lump-sum-couple-label">Para</InputLabel>
-          <Select
-            labelId="lump-sum-couple-label"
-            id="lump-sum-couple"
-            value={couple}
-            label="Wspólnie z małżonkiem"
-            onChange={(e) => dispatch(update({ couple: e.target.value }))}
-          >
-            <MenuItem value={0}>Nie</MenuItem>
-            <MenuItem value={1}>Tak</MenuItem>
-          </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={3}>
-          {couple && <TextField id="field-10"
-                                label="Dochód małżonka"
-                                variant="outlined"
-                                value={partnerIncomes}
-                                onChange={(e) => dispatch(update({ partnerIncomes: e.target.value }))}
-          />}
         </Grid>
       </Grid>
     </>

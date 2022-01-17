@@ -24,32 +24,32 @@ export class DataCollectingService {
       common: [
         {
           name: 'Podatek',
-          current: pit,
+          previous: pit,
           newDeal: newDealPit,
         },
         {
           name: 'Składka zdrowotna',
-          current: healthInsurance,
+          previous: healthInsurance,
           newDeal: newDealHealthInsurance,
         },
         {
           name: 'ZUS',
-          current: annualSocialInsurance,
+          previous: annualSocialInsurance,
           newDeal: annualSocialInsurance,
         },
         {
           name: 'SUMA obciążeń***',
-          current: sum,
+          previous: sum,
           newDeal: newDealSum,
         },
         {
           name: 'Ile zostaje netto?',
-          current: annualNetto,
+          previous: annualNetto,
           newDeal: newDealAnnualNetto,
         },
         {
           name: 'Ile to miesięcznie netto (na ręke)?',
-          current: monthlyNetto,
+          previous: monthlyNetto,
           newDeal: newDealMonthlyNetto,
         },
       ],
@@ -66,31 +66,43 @@ export class DataCollectingService {
           name: 'Ile stracisz / zyskasz na Polskim Ładzie Miesięcznie:',
           value: Utils.convertToCurrency(newDealMonthlyNetto - monthlyNetto),
         },
+        {
+          name: 'Miesięczne PIT',
+          value: `${Utils.roundup(newDealPit / 12)} zł`,
+        },
+        {
+          name: 'Miesięczne ZUS',
+          value: `${annualSocialInsurance / 12} zł`,
+        },
+        {
+          name: 'Miesięczne składka zdrowotna',
+          value: `${newDealHealthInsurance / 12} zł.`,
+        },
       ],
       chart: [
         {
           name: 'PIT',
-          current: pit,
+          previous: pit,
           newDeal: newDealPit,
         },
         {
           name: 'ZUS',
-          current: annualSocialInsurance,
+          previous: annualSocialInsurance,
           newDeal: annualSocialInsurance,
         },
         {
           name: 'Składka zdrowotna',
-          current: healthInsurance,
+          previous: healthInsurance,
           newDeal: newDealHealthInsurance,
         },
         {
           name: 'SUMA obciążeń***',
-          current: sum,
+          previous: sum,
           newDeal: newDealSum,
         },
         {
           name: 'Ile zostaje netto?',
-          current: annualNetto,
+          previous: annualNetto,
           newDeal: newDealAnnualNetto,
         },
       ]
@@ -119,47 +131,47 @@ export class DataCollectingService {
       common: [
         {
           name: 'Ulga dla klasy średniej',
-          current: 0,
+          previous: 0,
           newDeal: relief || 0,
         },
         {
           name: 'podstawa opodatkowania po uldze',
-          current: taxBase,
+          previous: taxBase,
           newDeal: relief ? (taxBase - relief) : taxBase,
         },
         {
           name: 'PIT',
-          current: pit,
+          previous: pit,
           newDeal: newDealPit,
         },
         {
           name: 'ZUS',
-          current: annualSocialInsurance,
+          previous: annualSocialInsurance,
           newDeal: annualSocialInsurance,
         },
         {
           name: 'Składka zdrowotna',
-          current: healthInsurance,
+          previous: healthInsurance,
           newDeal: newDealHealthInsurance,
         },
         {
           name: 'Danina solidarnościowa',
-          current: solidarity || 0,
+          previous: solidarity || 0,
           newDeal: solidarity || 0,
         },
         {
           name: 'SUMA obciążeń***',
-          current: sum,
+          previous: sum,
           newDeal: newDealSum,
         },
         {
           name: 'Ile zostaje netto?',
-          current: annualNetto,
+          previous: annualNetto,
           newDeal: newDealAnnualNetto,
         },
         {
           name: 'Ile to miesięcznie netto (na ręke)?',
-          current: monthlyNetto,
+          previous: monthlyNetto,
           newDeal: newDealMonthlyNetto,
         },
       ],
@@ -177,39 +189,51 @@ export class DataCollectingService {
           value: Utils.convertToCurrency(newDealMonthlyNetto - monthlyNetto),
         },
         {
-          name: "Wpadasz w drugi próg podatkowy ?",
+          name: "Wpadasz w drugi próg podatkowy?",
           value: taxBase >= 120000 ? "TAK" : "NIE"
-        }
+        },
+        {
+          name: 'Miesięczne PIT',
+          value: `${Utils.roundup(newDealPit / 12)} zł`,
+        },
+        {
+          name: 'Miesięczne ZUS',
+          value: `${Utils.roundup(annualSocialInsurance / 12)} zł`,
+        },
+        {
+          name: 'Miesięczne składka zdrowotna',
+          value: `${Utils.roundup(newDealHealthInsurance / 12)} zł.`,
+        },
       ],
       chart: [
         {
           name: 'PIT',
-          current: pit,
+          previous: pit,
           newDeal: newDealPit,
         },
         {
           name: 'ZUS',
-          current: annualSocialInsurance,
+          previous: annualSocialInsurance,
           newDeal: annualSocialInsurance,
         },
         {
           name: 'Składka zdrowotna',
-          current: healthInsurance,
+          previous: healthInsurance,
           newDeal: newDealHealthInsurance,
         },
         {
           name: 'Danina solidarnościowa',
-          current: solidarity || 0,
+          previous: solidarity || 0,
           newDeal: solidarity || 0,
         },
         {
           name: 'SUMA obciążeń***',
-          current: sum,
+          previous: sum,
           newDeal: newDealSum,
         },
         {
           name: 'Ile zostaje netto?',
-          current: annualNetto,
+          previous: annualNetto,
           newDeal: newDealAnnualNetto,
         },
       ]
@@ -237,37 +261,37 @@ export class DataCollectingService {
       common: [
         {
           name: 'PIT',
-          current: pit,
+          previous: pit,
           newDeal: newDealPit,
         },
         {
           name: 'ZUS',
-          current: annualSocialInsurance,
+          previous: annualSocialInsurance,
           newDeal: annualSocialInsurance,
         },
         {
           name: 'Składka zdrowotna',
-          current: healthInsurance,
+          previous: healthInsurance,
           newDeal: newDealHealthInsurance,
         },
         {
           name: 'Danina solidarnościowa',
-          current: solidarity || 0,
+          previous: solidarity || 0,
           newDeal: solidarity || 0,
         },
         {
           name: 'SUMA obciążeń***',
-          current: sum,
+          previous: sum,
           newDeal: newDealSum,
         },
         {
           name: 'Ile zostaje netto?',
-          current: annualNetto,
+          previous: annualNetto,
           newDeal: newDealAnnualNetto,
         },
         {
           name: 'Ile to miesięcznie netto (na ręke)?',
-          current: monthlyNetto,
+          previous: monthlyNetto,
           newDeal: newDealMonthlyNetto,
         },
       ],
@@ -284,36 +308,48 @@ export class DataCollectingService {
           name: 'Ile stracisz / zyskasz na Polskim Ładzie Miesięcznie:',
           value: Utils.convertToCurrency(newDealMonthlyNetto - monthlyNetto),
         },
+        {
+          name: 'Miesięczne PIT',
+          value: `${Utils.roundup(newDealPit / 12)} zł`,
+        },
+        {
+          name: 'Miesięczne ZUS',
+          value: `${Utils.roundup(annualSocialInsurance / 12)} zł`,
+        },
+        {
+          name: 'Miesięczne składka zdrowotna',
+          value: `${Utils.roundup(newDealHealthInsurance / 12)} zł.`,
+        },
       ],
       chart: [
         {
           name: 'PIT',
-          current: pit,
+          previous: pit,
           newDeal: newDealPit,
         },
         {
           name: 'ZUS',
-          current: annualSocialInsurance,
+          previous: annualSocialInsurance,
           newDeal: annualSocialInsurance,
         },
         {
           name: 'Składka zdrowotna',
-          current: healthInsurance,
+          previous: healthInsurance,
           newDeal: newDealHealthInsurance,
         },
         {
           name: 'Danina solidarnościowa',
-          current: solidarity || 0,
+          previous: solidarity || 0,
           newDeal: solidarity || 0,
         },
         {
           name: 'SUMA obciążeń***',
-          current: sum,
+          previous: sum,
           newDeal: newDealSum,
         },
         {
           name: 'Ile zostaje netto?',
-          current: annualNetto,
+          previous: annualNetto,
           newDeal: newDealAnnualNetto,
         },
       ]

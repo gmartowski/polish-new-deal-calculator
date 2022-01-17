@@ -18,7 +18,7 @@ const TableComponent = ({common, taxationTypeDetails, currency}) => {
     return Object.keys(common).map((item: string, index: number) => (
       <TableRow key={index}>
         <TableCell><strong>{common[item].name}</strong></TableCell>
-        <TableCell>{Utils.convertToCurrency(common[item].current, currency)}</TableCell>
+        <TableCell>{Utils.convertToCurrency(common[item].previous, currency)}</TableCell>
         <TableCell>{Utils.convertToCurrency(common[item].newDeal, currency)}</TableCell>
       </TableRow>
     ));

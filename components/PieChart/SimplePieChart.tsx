@@ -7,7 +7,7 @@ const SimplePieChart = ({ data }) => {
     return data.map((item: any) => {
       return {
         name: item.name,
-        current: item.current > 0 ? item.current : 0,
+        previous: item.previous > 0 ? item.previous : 0,
         newDeal: item.newDeal > 0 ? item.newDeal : 0,
       }
     });
@@ -31,7 +31,7 @@ const SimplePieChart = ({ data }) => {
         <YAxis/>
         <Tooltip/>
         <Legend/>
-        <Bar dataKey="current" fill="#8884d8"/>
+        <Bar dataKey="previous" fill="#8884d8"/>
         <Bar dataKey="newDeal" fill="#82ca9d"/>
       </BarChart>
     </ResponsiveContainer>
