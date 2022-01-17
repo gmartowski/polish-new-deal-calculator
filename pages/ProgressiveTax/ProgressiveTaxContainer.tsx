@@ -12,8 +12,6 @@ const ProgressiveTaxContainer = () => {
   const {
     annualSocialInsurance,
     lumpSumCurrency,
-    couple,
-    partnerIncomes,
   } = useSelector((state: RootState) => state.taxpayer);
 
   const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
@@ -93,7 +91,7 @@ const ProgressiveTaxContainer = () => {
   const effectiveRate = (sum: number): string => taxationBase === 0 ? "n/d" : `${Utils.roundup(sum / annualAverageIncome * 100)} %`;
 
   const calculateQuotas = (): IProgressiveTaxData => {
-    const taxBase = Utils.roundup(taxationBase + Number(couple ? partnerIncomes : 0))
+    const taxBase = Utils.roundup(taxationBase)
     const pit = newDealPersonalIncomeTax(taxBase);
     const relief = Utils.roundup(middleClassRelief());
     const solidarity = Utils.roundup(solidarityTax());
