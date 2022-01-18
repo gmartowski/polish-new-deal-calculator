@@ -20,37 +20,38 @@ export interface IFinalIncomesState {
 }
 
 const taxPayerInitialState: ITaxPayerState = {
-  annualRevenueNetto: 145000,
-  annualTaxDeductibleExpenses: 33000,
-  annualSocialInsurance: 11980,
+  annualRevenueNetto: 100000,
+  annualTaxDeductibleExpenses: 0,
+  annualSocialInsurance: 13490.76, // w 2021 - 11980 (roczna, sam ZUS miesięcznie 998), 2022  - 13490,76 (roczna, sam ZUS miesięcznie 1124,23)
   lumpSumPercentage: 0.12,
-  lumpSumCurrency:"PLN"
+  lumpSumCurrency: "PLN",
 };
 
 const taxCalculationsDetailsInitialState: ITaxCalculationsDetailsInitialState = {
-  annualAverageIncome: 145000 - 33000,
-  taxationBase: 145000 - 33000 - 11980,
+  annualAverageIncome: 100000,
+  taxationBase: 100000 - 13490.76,
 };
+
 interface IFinalIncomeItem {
   name: string;
-  current: number;
+  previous: number;
   newDeal: number;
 }
 
 const finalIncomes: IFinalIncomesState = {
   lumpSum: {
     name: 'Ryczałt',
-    current: 0,
+    previous: 0,
     newDeal: 0,
   },
   progressiveTax: {
     name: 'Skala podatkowa',
-    current: 0,
+    previous: 0,
     newDeal: 0,
   },
   flatTax: {
     name: 'Podatek Liniowy',
-    current: 0,
+    previous: 0,
     newDeal: 0,
   },
 };
@@ -74,19 +75,12 @@ export const taxCalculationsDetailsSlice = createSlice({
   initialState: taxCalculationsDetailsInitialState,
   reducers: {
     calculateAnnualAverageIncome: (state, action) => {
-      console.log('calculateAnnualAverageIncome',[
-        action.payload
-      ]);
-      console.log(action.payload.annualRevenueNetto - action.payload.annualTaxDeductibleExpenses);
       return {
         ...state,
         annualAverageIncome: action.payload.annualRevenueNetto - action.payload.annualTaxDeductibleExpenses,
       };
     },
     calculateTaxationBase: (state, action) => {
-      console.log('calculateTaxationBase',[
-        action.payload
-      ]);
       return {
         ...state,
         taxationBase: action.payload.annualAverageIncome - action.payload.annualSocialInsurance,
@@ -103,19 +97,19 @@ export const finalIncomesSlice = createSlice({
       return {
         lumpSum: {
           name: 'Ryczałt',
-          current: actions.payload.current,
+          previous: actions.payload.previous,
           newDeal: actions.payload.newDeal,
           ...state.lumpSum,
         },
         progressiveTax: {
           name: 'Skala podatkowa',
-          current: actions.payload.current,
+          previous: actions.payload.previous,
           newDeal: actions.payload.newDeal,
           ...state.progressiveTax,
         },
         flatTax: {
           name: 'Podatek Liniowy',
-          current: actions.payload.flatTax.current,
+          previous: actions.payload.flatTax.previous,
           newDeal: actions.payload.flatTax.newDeal,
           ...state.flatTax,
         },

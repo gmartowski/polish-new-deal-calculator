@@ -1,7 +1,7 @@
 export class Utils {
 
-  static roundup = (prop: () => number): number => {
-    return Math.round(Number(prop()));
+  static roundup = (prop: number): number => {
+    return Math.round(Number(prop));
   };
 
   static percentage = (prop: () => number): string => {
@@ -18,7 +18,7 @@ export class Utils {
     }
   };
 
-  static convertToCurrency = (value: number, currency: 'PLN' | 'EUR') => {
+  static convertToCurrency = (value: number, currency: 'PLN' | 'EUR' = 'PLN') => {
     const { locale, curr } = Utils.getCurrencyDetails(currency);
     return new Intl.NumberFormat(locale, { style: 'currency', currency: curr }).format(value);
   };

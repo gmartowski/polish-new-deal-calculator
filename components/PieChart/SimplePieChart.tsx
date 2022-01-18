@@ -1,13 +1,13 @@
-import React, {PureComponent} from 'react';
-import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import React, { PureComponent } from 'react';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const SimplePieChart = ({data}) => {
+const SimplePieChart = ({ data }) => {
 
   const preventNegativeValues = (data: any): any => {
     return data.map((item: any) => {
       return {
         name: item.name,
-        current: item.current > 0 ? item.current : 0,
+        previous: item.previous > 0 ? item.previous : 0,
         newDeal: item.newDeal > 0 ? item.newDeal : 0,
       }
     });
@@ -31,7 +31,7 @@ const SimplePieChart = ({data}) => {
         <YAxis/>
         <Tooltip/>
         <Legend/>
-        <Bar dataKey="current" fill="#8884d8"/>
+        <Bar dataKey="previous" fill="#8884d8"/>
         <Bar dataKey="newDeal" fill="#82ca9d"/>
       </BarChart>
     </ResponsiveContainer>

@@ -11,16 +11,14 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { Utils } from "../Utils/Utils";
-import Summarized from "./Summarized/Summarized";
+import {Utils} from "../Utils/Utils";
 
-const TableComponent = ({ common, summarized, taxationTypeDetails, currency }) => {
-
+const TableComponent = ({common, taxationTypeDetails, currency}) => {
   const presentData = () => {
     return Object.keys(common).map((item: string, index: number) => (
       <TableRow key={index}>
         <TableCell><strong>{common[item].name}</strong></TableCell>
-        <TableCell>{Utils.convertToCurrency(common[item].current, currency)}</TableCell>
+        <TableCell>{Utils.convertToCurrency(common[item].previous, currency)}</TableCell>
         <TableCell>{Utils.convertToCurrency(common[item].newDeal, currency)}</TableCell>
       </TableRow>
     ));
@@ -45,7 +43,6 @@ const TableComponent = ({ common, summarized, taxationTypeDetails, currency }) =
           <TableBody>{presentData()}</TableBody>
         </Table>
       </TableContainer>
-      <Summarized summarized={summarized}/>
     </>
   );
 };

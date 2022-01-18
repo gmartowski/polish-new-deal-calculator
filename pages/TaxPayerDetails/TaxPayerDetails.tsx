@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-const TaxpayerDetails = () => {
+const TaxPayerDetails = () => {
   const [data, setData] = useState('');
   const classes = useStyles();
   const {
@@ -35,7 +35,6 @@ const TaxpayerDetails = () => {
 
   const dispatch = useDispatch();
 
-
   return (
     <>
       <Grid container spacing={3} className={classes.grid}>
@@ -52,7 +51,10 @@ const TaxpayerDetails = () => {
                 annualRevenueNetto: Number(e.target.value),
                 annualTaxDeductibleExpenses,
               }));
-              dispatch(calculateTaxationBase({ annualSocialInsurance: annualSocialInsurance, annualAverageIncome }));
+              dispatch(calculateTaxationBase({
+                annualAverageIncome: Number(e.target.value) - annualTaxDeductibleExpenses,
+                annualSocialInsurance: annualSocialInsurance,
+              }));
             }}
           />
         </Grid>
@@ -66,10 +68,13 @@ const TaxpayerDetails = () => {
             onChange={(e) => {
               dispatch(update({ annualTaxDeductibleExpenses: Number(e.target.value) }));
               dispatch(calculateAnnualAverageIncome({
-                annualTaxDeductibleExpenses: Number(e.target.value),
                 annualRevenueNetto,
+                annualTaxDeductibleExpenses: Number(e.target.value),
               }));
-              dispatch(calculateTaxationBase({ annualSocialInsurance: annualSocialInsurance, annualAverageIncome }));
+              dispatch(calculateTaxationBase({
+                annualAverageIncome: annualRevenueNetto - Number(e.target.value),
+                annualSocialInsurance: annualSocialInsurance,
+              }));
             }}
           />
         </Grid>
@@ -80,13 +85,13 @@ const TaxpayerDetails = () => {
                      defaultValue={annualSocialInsurance}
                      onChange={(e) => {
                        dispatch(update({ annualSocialInsurance: Number(e.target.value) }));
-                       dispatch(calculateTaxationBase({
-                         annualSocialInsurance: Number(e.target.value),
-                         annualAverageIncome,
-                       }));
                        dispatch(calculateAnnualAverageIncome({
-                         annualTaxDeductibleExpenses: annualTaxDeductibleExpenses,
                          annualRevenueNetto,
+                         annualTaxDeductibleExpenses: annualTaxDeductibleExpenses,
+                       }));
+                       dispatch(calculateTaxationBase({
+                         annualAverageIncome: annualRevenueNetto - annualTaxDeductibleExpenses,
+                         annualSocialInsurance: Number(e.target.value),
                        }));
                      }}
           />
@@ -121,7 +126,6 @@ const TaxpayerDetails = () => {
               label="Stawka ryczałtowa"
               onChange={(e) => dispatch(update({ lumpSumPercentage: Number(e.target.value) }))}
             >
-              <MenuItem value={0.02}>0.02</MenuItem>
               <MenuItem value={0.1}>0.1</MenuItem>
               <MenuItem value={0.12}>0.12</MenuItem>
               <MenuItem value={0.15}>0.15</MenuItem>
@@ -148,4 +152,4 @@ const TaxpayerDetails = () => {
   );
 };
 
-export default TaxpayerDetails;
+export default TaxPayerDetails;
