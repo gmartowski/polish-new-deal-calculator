@@ -75,5 +75,100 @@ const progressiveData = {
     },
   }
 };
+const progressiveDescriptions = {
+  title: "Rozliczenie wg. skali podatkowej - 17%, 32%",
+  records: [
+    {
+      isNegative: false,
+      primary: "30 tys. PLN kwoty wolnej od podatku",
+      secondary: "Kwota wolna od podatku wzrośnie do 30 tysięcy złotych. Obecnie wynosi 8 tysięcy złotych."
+    },
+    {
+      isNegative: false,
+      primary: "Drugi próg podatkowy od 120 tys. PLN",
+      secondary: "Drugi próg podatkowy wzrośnie do 120 tysięcy złotych. Obecnie wynosi 85528 złotych."
+    },
+    {
+      isNegative: false,
+      primary: "Ulga dla klasy średniej",
+      secondary: "Pojawi się „ulga dla klasy średniej” mająca przysługiwać osobom, których przychody mieszczą się w przedziale od 68412 zł do 133692 zł rocznie."
+    },
+    {
+      isNegative: false,
+      primary: "Rozliczenie z małżonkiem",
+      secondary: "Jedynie na skali możemy się rozliczyć z małżonkiem"
+    },
+    {
+      isNegative: true,
+      primary: "Składka zdrowotna - 9% dochodu",
+      secondary: "Składka zdrowotna wzrośnie do 9% dochodu i nie będzie mogła być niższa niż 9% minimalnego wynagrodzenia."
+    },
+    {
+      isNegative: true,
+      primary: "Nie odliczymy składki zdrowotnej od podatku",
+      secondary: "Brak możliwości odliczenia składki zdrowotnej od podatku, podstawe opodatkowania pomniejszymy jedynie o ZUS"
+    },
+  ]
+}
+const flatTaxDescriptions = {
+  title: "Rozliczenie wg. stawki liniowej 19%",
+  records: [
+    {
+      isNegative: true,
+      primary: "4,9% - składki zdrowotnej",
+      secondary: "Składka zdrowotna wzrośnie do 4,9% dochodu"
+    },
+    {
+      isNegative: true,
+      primary: "Brak rozliczenia z małżonkiem",
+      secondary: "Jedynie będąc na skali możemy się rozliczyć z małżonkiem"
+    },
+    {
+      isNegative: true,
+      primary: "Brak kwoty wolnej od podatku",
+    },
+    {
+      isNegative: true,
+      primary: "Brak ulgi dla klasy średniej",
+      secondary: "Przewidziana jedynie dla UoP i skali"
+    },
+    {
+      isNegative: true,
+      primary: "Nie odliczymy składki zdrowotnej od podatku",
+      secondary: "Brak możliwości odliczenia składki zdrowotnej od podatku, podstawe opodatkowania pomniejszymy jedynie o ZUS"
+    },
+  ]
+}
+const lumpSumDescriptions = {
+  title: "Rozliczenie wg. stawki ryczałtowej",
+  records: [
+    {
+      isNegative: false,
+      primary: "Mniejsza stawka ryczałtowa dla IT",
+      secondary: "IT - zmiana opodatkowania z 15% na 12%",
+    },
+    {
+      isNegative: false,
+      primary: "Najprostsza forma opodatkowania",
+      secondary: "Brak skomplikowanych wzorów (ulga dla klasy średniej) i manipulacji kosztami",
+    },
+    {
+      isNegative: true,
+      primary: "Nie odliczymy składki zdrowotnej od podatku",
+      secondary: "Brak możliwości odliczenia składki zdrowotnej od podatku, podstawe opodatkowania pomniejszymy jedynie o ZUS"
+    },
+    {
+      isNegative: true,
+      primary: "Zmiana wysokości składki zdrowotnej",
+      secondary: "3 progi (60%, 100%, 180%) - przychód do 60, do 300 i powyżej 300 tys PLN, 9%. Jako przychód - kwota netto na FV. UWAGA ! Nie odejmujemy w tym przypadku składek ZUS !!!"
+    },
+    {
+      isNegative: true,
+      primary: "Brak ulgi dla klasy średniej",
+      secondary: "Przewidziana jedynie dla UoP i skali"
+    },
+  ]
+}
 
-export {numberOfMonths, progressiveData}
+
+export { numberOfMonths, progressiveData, progressiveDescriptions, flatTaxDescriptions, lumpSumDescriptions }

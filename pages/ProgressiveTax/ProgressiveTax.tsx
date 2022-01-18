@@ -3,13 +3,14 @@ import { Grid } from "@material-ui/core";
 import TableComponent from "../../components/Table/Table";
 import Summarized from "../../components/Table/Summarized/Summarized";
 import Chart from "../../components/Chart/Chart";
+import DescriptionList from "../../components/DescriptionList/DescriptionList";
+import { progressiveDescriptions } from "./ProgressiveTaxData";
 
 const ProgressiveTax = ({ data: { common, summarized, chart }, currency }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        <p>* W przypadku działalności gospodarczej, do wzoru podstawiamy przychód pomniejszony o koszty prowadzenia
-          działalności</p>
+        <DescriptionList items={progressiveDescriptions}/>
         <TableComponent
           common={common}
           taxationTypeDetails={{

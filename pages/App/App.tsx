@@ -27,7 +27,7 @@ const App = () => {
           <TabPanel value={value} index={0}><LumpSumContainer/></TabPanel>
           <TabPanel value={value} index={1}><ProgressiveTaxContainer/></TabPanel>
           <TabPanel value={value} index={2}><FlatTaxContainer/></TabPanel>
-          <TabPanel value={value} index={3}><Invoices/></TabPanel>
+          {/*<TabPanel value={value} index={3}><Invoices/></TabPanel>*/}
         </Grid>
       </Grid>
     </>
