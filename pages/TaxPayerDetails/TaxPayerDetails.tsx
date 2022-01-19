@@ -2,7 +2,7 @@ import { FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextField 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { calculateAnnualAverageIncome, calculateTaxationBase, update } from "../../redux/taxpayerSlice";
+import { calculateAnnualAverageIncome, calculateTaxationBase, update } from "../../redux/TaxPayerSlice/TaxPayerSlice";
 import axios from 'axios';
 
 const useStyles = makeStyles({
