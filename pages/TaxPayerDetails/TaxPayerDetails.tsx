@@ -23,13 +23,6 @@ const TaxPayerDetails = () => {
     lumpSumCurrency,
   } = useSelector((state: RootState) => state.taxpayer);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get('http://api.nbp.pl/api/exchangerates/rates/a/eur/');
-      setData(result.data.rates[0].mid);
-    };
-    fetchData();
-  }, []);
 
   const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
 
@@ -129,21 +122,6 @@ const TaxPayerDetails = () => {
               <MenuItem value={0.1}>0.1</MenuItem>
               <MenuItem value={0.12}>0.12</MenuItem>
               <MenuItem value={0.15}>0.15</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={3}>
-          <FormControl>
-            <InputLabel id="lump-sum-currency-label">Waluta</InputLabel>
-            <Select
-              labelId="lump-sum-currency-label"
-              id="lump-sum-currency"
-              value={lumpSumCurrency}
-              label="Waluta"
-              onChange={(e) => dispatch(update({ lumpSumCurrency: e.target.value }))}
-            >
-              <MenuItem value={"PLN"}>PLN</MenuItem>
-              <MenuItem value={"EUR"}>EUR</MenuItem>
             </Select>
           </FormControl>
         </Grid>
