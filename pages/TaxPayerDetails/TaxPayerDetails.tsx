@@ -1,9 +1,10 @@
+import React from "react";
 import { FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { calculateAnnualAverageIncome, calculateTaxationBase, update } from "../../redux/TaxPayerSlice/TaxPayerSlice";
-import axios from 'axios';
+import { update } from "../../redux/TaxPayerSlice/TaxPayerSlice";
+import { calculateAnnualAverageIncome } from "../../redux/TaxCalculationDetailsSlice/TaxCalculationDetailsSlice";
+import { calculateTaxationBase } from "../../redux/TaxCalculationDetailsSlice/TaxCalculationDetailsSlice";
 
 const useStyles = makeStyles({
   grid: {
@@ -13,16 +14,13 @@ const useStyles = makeStyles({
 });
 
 const TaxPayerDetails = () => {
-  const [data, setData] = useState('');
   const classes = useStyles();
   const {
     annualRevenueNetto,
     annualTaxDeductibleExpenses,
     annualSocialInsurance,
     lumpSumPercentage,
-    lumpSumCurrency,
   } = useSelector((state: RootState) => state.taxpayer);
-
 
   const { annualAverageIncome, taxationBase } = useSelector((state: RootState) => state.taxCalculationsReducer);
 
