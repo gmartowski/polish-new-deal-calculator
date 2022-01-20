@@ -7,7 +7,6 @@ import FlatTaxContainer from "../FlatTax/FlatTaxContainer";
 import LumpSumContainer from "../LumpSum/LumpSumContainer";
 import TaxPayerDetails from "../TaxPayerDetails/TaxPayerDetails";
 import ProgressiveTaxContainer from "../ProgressiveTax/ProgressiveTaxContainer";
-import Invoices from "../Invoices/Invoices";
 
 const App = () => {
   const [value, setValue] = React.useState(0);
@@ -27,7 +26,6 @@ const App = () => {
           <TabPanel value={value} index={0}><LumpSumContainer/></TabPanel>
           <TabPanel value={value} index={1}><ProgressiveTaxContainer/></TabPanel>
           <TabPanel value={value} index={2}><FlatTaxContainer/></TabPanel>
-          {/*<TabPanel value={value} index={3}><Invoices/></TabPanel>*/}
         </Grid>
       </Grid>
     </>
