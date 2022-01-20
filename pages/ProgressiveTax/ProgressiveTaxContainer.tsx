@@ -26,7 +26,7 @@ const ProgressiveTaxContainer = () => {
     }
 
     if (avgIncome > third.quota) {
-      return Math.round((avgIncome * (third.fancyCounter) + third.fancyQuotaToAdd) / percentage);
+      return Math.round(((avgIncome * third.fancyCounter) + third.fancyQuotaToAdd) / percentage);
     }
 
     if (avgIncome >= second.quota) {
@@ -52,7 +52,7 @@ const ProgressiveTaxContainer = () => {
     return taxationBase > threshold ? (taxationBase - threshold) * percentage : minimalQuota;
   };
 
-  const personalIncomeTax = (base: number, relief: number): number => {
+  const newDealPersonalIncomeTax = (base: number, relief: number): number => {
     const { quota, freeQuota, percentage } = progressiveData.thresholds.afterND.first
     const { percentage: secondPercentage } = progressiveData.thresholds.afterND.second
     const baseAfterRelief = base - relief;
@@ -72,7 +72,7 @@ const ProgressiveTaxContainer = () => {
     return quota * percentage + ((baseAfterRelief - quota) * secondPercentage) - freeQuota;
   };
 
-  const newDealPersonalIncomeTax = (base: number): number => {
+  const personalIncomeTax = (base: number): number => {
     const { quota, percentage, freeQuota } = progressiveData.thresholds.beforeND.first;
     const { percentage: secondPercentage } = progressiveData.thresholds.beforeND.second;
     const { quotaForPIT } = progressiveData.healthInsurance.beforeND;
@@ -92,14 +92,14 @@ const ProgressiveTaxContainer = () => {
 
   const calculateQuotas = (): IProgressiveTaxData => {
     const taxBase = Utils.roundup(taxationBase)
-    const pit = newDealPersonalIncomeTax(taxBase);
+    const pit = Utils.roundup(personalIncomeTax(taxBase));
     const relief = Utils.roundup(middleClassRelief());
     const solidarity = Utils.roundup(solidarityTax());
     const healthInsurance = Utils.roundup(numberOfMonths * progressiveData.healthInsurance.beforeND.quota);
     const sum = pit + annualSocialInsurance + healthInsurance + solidarity;
     const annualNetto = Utils.roundup(annualAverageIncome - sum);
 
-    const newDealPit = Utils.roundup(personalIncomeTax(taxBase, relief));
+    const newDealPit = Utils.roundup(newDealPersonalIncomeTax(taxBase, relief));
     const newDealHealthInsurance = Utils.roundup(annualHealthInsurance());
     const newDealSum = newDealPit + annualSocialInsurance + newDealHealthInsurance + solidarity;
     const newDealAnnualNetto = Utils.roundup(annualAverageIncome - newDealSum);
@@ -123,7 +123,8 @@ const ProgressiveTaxContainer = () => {
     };
   };
 
-  return <ProgressiveTax data={DataCollectingService.collectProgressiveTaxData(calculateQuotas())} currency={lumpSumCurrency}/>;
+  return <ProgressiveTax data={DataCollectingService.collectProgressiveTaxData(calculateQuotas())}
+                         currency={lumpSumCurrency}/>;
 };
 
 export default ProgressiveTaxContainer;
